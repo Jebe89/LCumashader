@@ -10,3 +10,5 @@ For more info about how original game file work, you could go check the followin
 https://github.com/katboi01/UmaViewer
 
 https://github.com/CherishingWish/UmaModStudio
+
+Special Thanks to @LC_ilmlp, if not his shader tutorial this shader wont be here.
