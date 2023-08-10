@@ -1,4 +1,4 @@
-// Made with Amplify Shader Editor v1.9.1.5
+// Made with Amplify Shader Editor v1.9.1.7
 // Available at the Unity Asset Store - http://u3d.as/y3X 
 Shader "LCumashader/Eye"
 {
@@ -470,7 +470,7 @@ Shader "LCumashader/Eye"
 				o.ase_texcoord3.w = 0;
 				o.ase_sh.w = 0;
 				
-				v.vertex.xyz += ( v.ase_texcoord.y >= 0.5 ? ( _UseCustomTransform == 1.0 ? mul( (( _FakeEyeTrackingL )?( ( _VertexOffsetL + appendResult1836 ) ):( _VertexOffsetL )), CustomMatrixL1802 ) : (( _FakeEyeTrackingL )?( ( _VertexOffsetL + appendResult1836 ) ):( _VertexOffsetL )) ) : ( 0.0 == 1.0 ? mul( (( _FakeEyeTrackingR )?( ( _VertexOffsetR + appendResult1898 ) ):( _VertexOffsetR )), CustomMatrixR1801 ) : (( _FakeEyeTrackingR )?( ( _VertexOffsetR + appendResult1898 ) ):( _VertexOffsetR )) ) );
+				v.vertex.xyz += ( v.ase_texcoord.y >= 0.5 ? ( _UseCustomTransform == 1.0 ? mul( (( _FakeEyeTrackingL )?( ( _VertexOffsetL + appendResult1836 ) ):( _VertexOffsetL )), CustomMatrixL1802 ) : (( _FakeEyeTrackingL )?( ( _VertexOffsetL + appendResult1836 ) ):( _VertexOffsetL )) ) : ( _UseCustomTransform == 1.0 ? mul( (( _FakeEyeTrackingR )?( ( _VertexOffsetR + appendResult1898 ) ):( _VertexOffsetR )), CustomMatrixR1801 ) : (( _FakeEyeTrackingR )?( ( _VertexOffsetR + appendResult1898 ) ):( _VertexOffsetR )) ) );
 				o.pos = UnityObjectToClipPos(v.vertex);
 				#if ASE_SHADOWS
 					#if UNITY_VERSION >= 560
@@ -933,7 +933,7 @@ Shader "LCumashader/Eye"
 				o.ase_texcoord3.w = 0;
 				o.ase_sh.w = 0;
 				
-				v.vertex.xyz += ( v.ase_texcoord.y >= 0.5 ? ( _UseCustomTransform == 1.0 ? mul( (( _FakeEyeTrackingL )?( ( _VertexOffsetL + appendResult1836 ) ):( _VertexOffsetL )), CustomMatrixL1802 ) : (( _FakeEyeTrackingL )?( ( _VertexOffsetL + appendResult1836 ) ):( _VertexOffsetL )) ) : ( 0.0 == 1.0 ? mul( (( _FakeEyeTrackingR )?( ( _VertexOffsetR + appendResult1898 ) ):( _VertexOffsetR )), CustomMatrixR1801 ) : (( _FakeEyeTrackingR )?( ( _VertexOffsetR + appendResult1898 ) ):( _VertexOffsetR )) ) );
+				v.vertex.xyz += ( v.ase_texcoord.y >= 0.5 ? ( _UseCustomTransform == 1.0 ? mul( (( _FakeEyeTrackingL )?( ( _VertexOffsetL + appendResult1836 ) ):( _VertexOffsetL )), CustomMatrixL1802 ) : (( _FakeEyeTrackingL )?( ( _VertexOffsetL + appendResult1836 ) ):( _VertexOffsetL )) ) : ( _UseCustomTransform == 1.0 ? mul( (( _FakeEyeTrackingR )?( ( _VertexOffsetR + appendResult1898 ) ):( _VertexOffsetR )), CustomMatrixR1801 ) : (( _FakeEyeTrackingR )?( ( _VertexOffsetR + appendResult1898 ) ):( _VertexOffsetR )) ) );
 				o.pos = UnityObjectToClipPos(v.vertex);
 				#if ASE_SHADOWS
 					#if UNITY_VERSION >= 560
@@ -1381,7 +1381,7 @@ Shader "LCumashader/Eye"
 				o.ase_texcoord3.w = 0;
 				o.ase_sh.w = 0;
 				
-				v.vertex.xyz += ( v.ase_texcoord.y >= 0.5 ? ( _UseCustomTransform == 1.0 ? mul( (( _FakeEyeTrackingL )?( ( _VertexOffsetL + appendResult1836 ) ):( _VertexOffsetL )), CustomMatrixL1802 ) : (( _FakeEyeTrackingL )?( ( _VertexOffsetL + appendResult1836 ) ):( _VertexOffsetL )) ) : ( 0.0 == 1.0 ? mul( (( _FakeEyeTrackingR )?( ( _VertexOffsetR + appendResult1898 ) ):( _VertexOffsetR )), CustomMatrixR1801 ) : (( _FakeEyeTrackingR )?( ( _VertexOffsetR + appendResult1898 ) ):( _VertexOffsetR )) ) );
+				v.vertex.xyz += ( v.ase_texcoord.y >= 0.5 ? ( _UseCustomTransform == 1.0 ? mul( (( _FakeEyeTrackingL )?( ( _VertexOffsetL + appendResult1836 ) ):( _VertexOffsetL )), CustomMatrixL1802 ) : (( _FakeEyeTrackingL )?( ( _VertexOffsetL + appendResult1836 ) ):( _VertexOffsetL )) ) : ( _UseCustomTransform == 1.0 ? mul( (( _FakeEyeTrackingR )?( ( _VertexOffsetR + appendResult1898 ) ):( _VertexOffsetR )), CustomMatrixR1801 ) : (( _FakeEyeTrackingR )?( ( _VertexOffsetR + appendResult1898 ) ):( _VertexOffsetR )) ) );
 				TRANSFER_SHADOW_CASTER_NORMALOFFSET(o)
 				return o;
 			}
@@ -1482,7 +1482,7 @@ Shader "LCumashader/Eye"
 	Fallback Off
 }
 /*ASEBEGIN
-Version=19105
+Version=19107
 Node;AmplifyShaderEditor.CommentaryNode;1956;-5387.377,627.3367;Inherit;False;2116.237;1227.786;;44;1706;773;825;1940;1704;1936;1937;1938;1939;1942;826;304;875;303;876;301;1705;1941;1944;1945;1946;208;780;779;776;778;1929;800;797;781;1951;1952;1953;1954;1955;1710;1709;1708;1707;1720;1719;1960;1961;1962;Light;1,1,1,1;0;0
 Node;AmplifyShaderEditor.CommentaryNode;1928;-4191.22,4622.324;Inherit;False;1688.098;1002.819;;35;1787;1788;1802;1809;1780;1781;1782;1923;1924;1805;1783;1785;1784;1786;1789;1790;1925;1804;1791;1792;1793;1797;1798;1801;1926;1927;1794;1795;1803;1807;1808;1806;1796;1799;1800;Custom Transform;1,1,1,1;0;0
 Node;AmplifyShaderEditor.CommentaryNode;1696;-3235.56,1599.333;Inherit;False;2589.269;1182.234;;41;1307;1304;1378;1376;1377;1379;1382;1234;1285;1286;1370;1389;1342;1683;1679;1678;1681;1682;913;1222;65;1343;1686;1687;1688;1689;1690;1344;1691;1692;1693;1253;1254;1252;66;1223;914;1694;1695;1713;1714;HighLight Blend;1,1,1,1;0;0
@@ -2431,6 +2431,7 @@ WireConnection;1915;0;1916;0
 WireConnection;1915;1;1898;0
 WireConnection;1917;0;1914;0
 WireConnection;1917;1;1913;0
+WireConnection;1918;0;1922;0
 WireConnection;1918;2;1917;0
 WireConnection;1918;3;1914;0
 WireConnection;1919;0;1921;2
@@ -2651,4 +2652,4 @@ WireConnection;800;0;797;0
 WireConnection;800;2;776;0
 WireConnection;781;0;800;0
 ASEEND*/
-//CHKSM=0AD631B6A3D24810BCF597AA3F11F207159E5850
+//CHKSM=BE16E595E537EE8037FEBCD59B0A32BEAEB6EFEA
