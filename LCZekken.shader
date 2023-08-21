@@ -1,4 +1,4 @@
-// Made with Amplify Shader Editor v1.9.1.5
+// Made with Amplify Shader Editor v1.9.1.7
 // Available at the Unity Asset Store - http://u3d.as/y3X 
 Shader "LCumashader/Zekken"
 {
@@ -499,7 +499,6 @@ Shader "LCumashader/Zekken"
 			#include "AutoLight.cginc"
 			#define ASE_NEEDS_VERT_NORMAL
 			#define ASE_SHADOWS 1
-			#define ASE_NEEDS_FRAG_COLOR
 
 			//This is a late directive
 			
@@ -696,7 +695,6 @@ Shader "LCumashader/Zekken"
 				UNITY_SHADOW_COORDS(4)
 				float4 ase_lmap : TEXCOORD5;
 				float4 ase_sh : TEXCOORD6;
-				float4 ase_color : COLOR;
 			};
 			
 			v2f vert ( appdata v )
@@ -729,12 +727,12 @@ Shader "LCumashader/Zekken"
 				o.ase_sh.xyz = ShadeSHPerVertex (ase_worldNormal, o.ase_sh.xyz);
 				#endif //sh
 				#endif //nstalm
+				float vertexToFrag1161 = (( _UseShadowMaskVertexColorA )?( v.ase_color.a ):( 1.0 ));
+				o.ase_texcoord1.w = vertexToFrag1161;
 				
 				o.ase_texcoord3.xy = v.ase_texcoord.xy;
-				o.ase_color = v.ase_color;
 				
 				//setting value to unused interpolator channels and avoid initialization warnings
-				o.ase_texcoord1.w = 0;
 				o.ase_texcoord2.w = 0;
 				o.ase_texcoord3.zw = 0;
 				o.ase_sh.w = 0;
@@ -828,7 +826,8 @@ Shader "LCumashader/Zekken"
 				float3 LightColor208 = lerpResult1082;
 				float GlobalLightFactor1011 = _GlobalLightFactor;
 				float4 lerpResult1016 = lerp( ( _SpecularColor * SpecularPower438 ) , ( _SpecularColor * SpecularPower438 * float4( LightColor208 , 0.0 ) ) , GlobalLightFactor1011);
-				float VertexColorShadowMask648 = (( _UseShadowMaskVertexColorA )?( i.ase_color.a ):( 1.0 ));
+				float vertexToFrag1161 = i.ase_texcoord1.w;
+				float VertexColorShadowMask648 = vertexToFrag1161;
 				float2 uv_MainTex = i.ase_texcoord3.xy * _MainTex_ST.xy + _MainTex_ST.zw;
 				float4 diff345 = tex2D( _MainTex, uv_MainTex );
 				float2 appendResult1093 = (float2(_Diffuse2TilingOffset1.x , _Diffuse2TilingOffset1.y));
@@ -850,7 +849,7 @@ Shader "LCumashader/Zekken"
 				float DiffuseLightFactor1158 = _DiffuseLightFactor;
 				float4 lerpResult1009 = lerp( lerpResult1146 , ( lerpResult1146 * float4( LightColor208 , 0.0 ) ) , DiffuseLightFactor1158);
 				float4 lit_diff349 = lerpResult1009;
-				float4 toon_diff370 = ( (( _UseShadowMaskVertexColorA )?( i.ase_color.a ):( 1.0 )) == 1.0 ? ( 0.5 >= _ToonBrightColor.a ? ( _ToonBrightColor * lit_diff349 ) : ( _ToonBrightColor + lit_diff349 ) ) : lit_diff349 );
+				float4 toon_diff370 = ( vertexToFrag1161 == 1.0 ? ( 0.5 >= _ToonBrightColor.a ? ( _ToonBrightColor * lit_diff349 ) : ( _ToonBrightColor + lit_diff349 ) ) : lit_diff349 );
 				float2 uv_ShadTex = i.ase_texcoord3.xy * _ShadTex_ST.xy + _ShadTex_ST.zw;
 				float4 shad_c330 = tex2D( _ShadTex, uv_ShadTex );
 				float4 lerpResult1035 = lerp( shad_c330 , ( diff21027 * _Diffuse2ShadowColor ) , (diff21027).a);
@@ -958,7 +957,6 @@ Shader "LCumashader/Zekken"
 			#include "AutoLight.cginc"
 			#define ASE_NEEDS_VERT_NORMAL
 			#define ASE_SHADOWS 1
-			#define ASE_NEEDS_FRAG_COLOR
 
 			//This is a late directive
 			
@@ -1155,7 +1153,6 @@ Shader "LCumashader/Zekken"
 				UNITY_SHADOW_COORDS(4)
 				float4 ase_lmap : TEXCOORD5;
 				float4 ase_sh : TEXCOORD6;
-				float4 ase_color : COLOR;
 			};
 			
 			v2f vert ( appdata v )
@@ -1188,12 +1185,12 @@ Shader "LCumashader/Zekken"
 				o.ase_sh.xyz = ShadeSHPerVertex (ase_worldNormal, o.ase_sh.xyz);
 				#endif //sh
 				#endif //nstalm
+				float vertexToFrag1161 = (( _UseShadowMaskVertexColorA )?( v.ase_color.a ):( 1.0 ));
+				o.ase_texcoord1.w = vertexToFrag1161;
 				
 				o.ase_texcoord3.xy = v.ase_texcoord.xy;
-				o.ase_color = v.ase_color;
 				
 				//setting value to unused interpolator channels and avoid initialization warnings
-				o.ase_texcoord1.w = 0;
 				o.ase_texcoord2.w = 0;
 				o.ase_texcoord3.zw = 0;
 				o.ase_sh.w = 0;
@@ -1287,7 +1284,8 @@ Shader "LCumashader/Zekken"
 				float3 LightColor208 = lerpResult1082;
 				float GlobalLightFactor1011 = _GlobalLightFactor;
 				float4 lerpResult1016 = lerp( ( _SpecularColor * SpecularPower438 ) , ( _SpecularColor * SpecularPower438 * float4( LightColor208 , 0.0 ) ) , GlobalLightFactor1011);
-				float VertexColorShadowMask648 = (( _UseShadowMaskVertexColorA )?( i.ase_color.a ):( 1.0 ));
+				float vertexToFrag1161 = i.ase_texcoord1.w;
+				float VertexColorShadowMask648 = vertexToFrag1161;
 				float2 uv_MainTex = i.ase_texcoord3.xy * _MainTex_ST.xy + _MainTex_ST.zw;
 				float4 diff345 = tex2D( _MainTex, uv_MainTex );
 				float2 appendResult1093 = (float2(_Diffuse2TilingOffset1.x , _Diffuse2TilingOffset1.y));
@@ -1309,7 +1307,7 @@ Shader "LCumashader/Zekken"
 				float DiffuseLightFactor1158 = _DiffuseLightFactor;
 				float4 lerpResult1009 = lerp( lerpResult1146 , ( lerpResult1146 * float4( LightColor208 , 0.0 ) ) , DiffuseLightFactor1158);
 				float4 lit_diff349 = lerpResult1009;
-				float4 toon_diff370 = ( (( _UseShadowMaskVertexColorA )?( i.ase_color.a ):( 1.0 )) == 1.0 ? ( 0.5 >= _ToonBrightColor.a ? ( _ToonBrightColor * lit_diff349 ) : ( _ToonBrightColor + lit_diff349 ) ) : lit_diff349 );
+				float4 toon_diff370 = ( vertexToFrag1161 == 1.0 ? ( 0.5 >= _ToonBrightColor.a ? ( _ToonBrightColor * lit_diff349 ) : ( _ToonBrightColor + lit_diff349 ) ) : lit_diff349 );
 				float2 uv_ShadTex = i.ase_texcoord3.xy * _ShadTex_ST.xy + _ShadTex_ST.zw;
 				float4 shad_c330 = tex2D( _ShadTex, uv_ShadTex );
 				float4 lerpResult1035 = lerp( shad_c330 , ( diff21027 * _Diffuse2ShadowColor ) , (diff21027).a);
@@ -1401,7 +1399,6 @@ Shader "LCumashader/Zekken"
 			#include "AutoLight.cginc"
 			#define ASE_NEEDS_VERT_NORMAL
 			#define ASE_SHADOWS 1
-			#define ASE_NEEDS_FRAG_COLOR
 
 			//This is a late directive
 			
@@ -1598,7 +1595,6 @@ Shader "LCumashader/Zekken"
 				UNITY_SHADOW_COORDS(4)
 				float4 ase_lmap : TEXCOORD5;
 				float4 ase_sh : TEXCOORD6;
-				float4 ase_color : COLOR;
 			};
 
 			
@@ -1632,12 +1628,12 @@ Shader "LCumashader/Zekken"
 				o.ase_sh.xyz = ShadeSHPerVertex (ase_worldNormal, o.ase_sh.xyz);
 				#endif //sh
 				#endif //nstalm
+				float vertexToFrag1161 = (( _UseShadowMaskVertexColorA )?( v.ase_color.a ):( 1.0 ));
+				o.ase_texcoord1.w = vertexToFrag1161;
 				
 				o.ase_texcoord3.xy = v.ase_texcoord.xy;
-				o.ase_color = v.ase_color;
 				
 				//setting value to unused interpolator channels and avoid initialization warnings
-				o.ase_texcoord1.w = 0;
 				o.ase_texcoord2.w = 0;
 				o.ase_texcoord3.zw = 0;
 				o.ase_sh.w = 0;
@@ -1724,7 +1720,8 @@ Shader "LCumashader/Zekken"
 				float3 LightColor208 = lerpResult1082;
 				float GlobalLightFactor1011 = _GlobalLightFactor;
 				float4 lerpResult1016 = lerp( ( _SpecularColor * SpecularPower438 ) , ( _SpecularColor * SpecularPower438 * float4( LightColor208 , 0.0 ) ) , GlobalLightFactor1011);
-				float VertexColorShadowMask648 = (( _UseShadowMaskVertexColorA )?( i.ase_color.a ):( 1.0 ));
+				float vertexToFrag1161 = i.ase_texcoord1.w;
+				float VertexColorShadowMask648 = vertexToFrag1161;
 				float2 uv_MainTex = i.ase_texcoord3.xy * _MainTex_ST.xy + _MainTex_ST.zw;
 				float4 diff345 = tex2D( _MainTex, uv_MainTex );
 				float2 appendResult1093 = (float2(_Diffuse2TilingOffset1.x , _Diffuse2TilingOffset1.y));
@@ -1746,7 +1743,7 @@ Shader "LCumashader/Zekken"
 				float DiffuseLightFactor1158 = _DiffuseLightFactor;
 				float4 lerpResult1009 = lerp( lerpResult1146 , ( lerpResult1146 * float4( LightColor208 , 0.0 ) ) , DiffuseLightFactor1158);
 				float4 lit_diff349 = lerpResult1009;
-				float4 toon_diff370 = ( (( _UseShadowMaskVertexColorA )?( i.ase_color.a ):( 1.0 )) == 1.0 ? ( 0.5 >= _ToonBrightColor.a ? ( _ToonBrightColor * lit_diff349 ) : ( _ToonBrightColor + lit_diff349 ) ) : lit_diff349 );
+				float4 toon_diff370 = ( vertexToFrag1161 == 1.0 ? ( 0.5 >= _ToonBrightColor.a ? ( _ToonBrightColor * lit_diff349 ) : ( _ToonBrightColor + lit_diff349 ) ) : lit_diff349 );
 				float2 uv_ShadTex = i.ase_texcoord3.xy * _ShadTex_ST.xy + _ShadTex_ST.zw;
 				float4 shad_c330 = tex2D( _ShadTex, uv_ShadTex );
 				float4 lerpResult1035 = lerp( shad_c330 , ( diff21027 * _Diffuse2ShadowColor ) , (diff21027).a);
@@ -1820,8 +1817,8 @@ Shader "LCumashader/Zekken"
 	Fallback Off
 }
 /*ASEBEGIN
-Version=19105
-Node;AmplifyShaderEditor.CommentaryNode;1155;-2149.761,-3456.676;Inherit;False;1604.058;2011.704;;63;387;394;386;381;405;393;371;369;365;366;368;370;648;399;383;372;649;382;647;392;375;364;338;337;339;335;334;1059;1060;1055;1058;1057;1056;336;1033;340;1036;1037;1034;1148;1151;1035;1150;1152;342;1008;344;343;1012;420;1149;346;1029;1032;1030;348;1009;349;1013;347;1146;1145;1147;Shadow Process;1,1,1,1;0;0
+Version=19107
+Node;AmplifyShaderEditor.CommentaryNode;1155;-2149.761,-3456.676;Inherit;False;1604.058;2011.704;;64;387;394;386;381;405;393;371;369;365;366;368;370;648;399;383;372;649;382;647;392;375;364;338;337;339;335;334;1059;1060;1055;1058;1057;1056;336;1033;340;1036;1037;1034;1148;1151;1035;1150;1152;342;1008;344;343;1012;420;1149;346;1029;1032;1030;348;1009;349;1013;347;1146;1145;1147;1161;Shadow Process;1,1,1,1;0;0
 Node;AmplifyShaderEditor.CommentaryNode;1127;-600.0047,2088.607;Inherit;False;1427.902;1567.508;;33;727;735;737;738;739;740;742;734;729;732;733;914;913;730;1117;1118;1119;1120;1121;1122;1123;1124;1125;1126;744;746;745;743;747;748;749;750;751;Outline;1,1,1,1;0;0
 Node;AmplifyShaderEditor.CommentaryNode;1116;-4272.453,-3298.233;Inherit;False;713.9761;1118.281;;16;1101;1102;1103;1104;1097;1098;1095;1093;1094;1092;1106;1107;1108;1105;1153;1154;Tiling&Offset;1,1,1,1;0;0
 Node;AmplifyShaderEditor.CommentaryNode;1115;-3510.668,-3486.003;Inherit;False;1284.268;3046.71;;40;600;620;68;401;916;917;918;919;350;355;559;330;408;646;436;65;67;66;938;937;64;345;1086;1039;1040;1088;1113;1090;1027;1099;1100;1109;1110;1112;1111;1129;1139;1140;1143;1144;Texture Input;1,1,1,1;0;0
@@ -2232,13 +2229,10 @@ Node;AmplifyShaderEditor.GetLocalVarNode;365;-2041.145,-1900.637;Inherit;False;3
 Node;AmplifyShaderEditor.Compare;366;-1595.453,-2097.885;Inherit;False;3;4;0;FLOAT;0.5;False;1;FLOAT;0;False;2;COLOR;0,0,0,0;False;3;COLOR;0,0,0,0;False;1;COLOR;0
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode;368;-1786.734,-2097.726;Inherit;False;2;2;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;1;COLOR;0
 Node;AmplifyShaderEditor.RegisterLocalVarNode;370;-1205.203,-2172.589;Inherit;False;toon_diff;-1;True;1;0;COLOR;0,0,0,0;False;1;COLOR;0
-Node;AmplifyShaderEditor.RegisterLocalVarNode;648;-1418.877,-2272.265;Inherit;False;VertexColorShadowMask;-1;True;1;0;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.RegisterLocalVarNode;399;-1029.334,-1898.787;Inherit;False;shaded_diff;-1;True;1;0;COLOR;0,0,0,0;False;1;COLOR;0
 Node;AmplifyShaderEditor.Compare;383;-1191.513,-1902.631;Inherit;False;0;4;0;FLOAT;0;False;1;FLOAT;1;False;2;COLOR;0,0,0,0;False;3;COLOR;0,0,0,0;False;1;COLOR;0
 Node;AmplifyShaderEditor.GetLocalVarNode;372;-1606.138,-1942.643;Inherit;False;349;lit_diff;1;0;OBJECT;;False;1;COLOR;0
 Node;AmplifyShaderEditor.GetLocalVarNode;649;-1434.477,-1906.965;Inherit;False;648;VertexColorShadowMask;1;0;OBJECT;;False;1;FLOAT;0
-Node;AmplifyShaderEditor.VertexColorNode;382;-1897.429,-2287.095;Inherit;False;0;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
-Node;AmplifyShaderEditor.ToggleSwitchNode;647;-1716.402,-2220.825;Inherit;False;Property;_UseShadowMaskVertexColorA;Use ShadowMask (VertexColorA);11;0;Create;True;0;0;0;False;0;False;0;True;2;0;FLOAT;1;False;1;FLOAT;1;False;1;FLOAT;0
 Node;AmplifyShaderEditor.GetLocalVarNode;392;-1622.075,-1560.971;Inherit;False;339;shad_lerp;1;0;OBJECT;;False;1;FLOAT;0
 Node;AmplifyShaderEditor.ColorNode;375;-2068.137,-1779.632;Inherit;False;Property;_ToonDarkColor;ToonDarkColor;14;1;[HDR];Create;True;0;0;0;False;0;False;0,0,0,1;1,1,1,1;True;0;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.ColorNode;364;-2055.676,-2098.194;Inherit;False;Property;_ToonBrightColor;ToonBrightColor;9;1;[HDR];Create;True;0;0;0;False;0;False;0,0,0,1;1,1,1,0;True;0;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
@@ -2305,6 +2299,10 @@ Node;AmplifyShaderEditor.CustomExpressionNode;1160;-4734.532,2260.448;Inherit;Fa
 Node;AmplifyShaderEditor.Compare;1159;-4574.602,2267.105;Inherit;False;0;4;0;FLOAT;0;False;1;FLOAT;1;False;2;FLOAT;0;False;3;FLOAT;1;False;1;FLOAT;0
 Node;AmplifyShaderEditor.RegisterLocalVarNode;1053;-4413.163,2264.726;Inherit;False;HalfShadowAttenuation;-1;True;1;0;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.LightAttenuation;1049;-5115.964,2297.351;Inherit;False;0;1;FLOAT;0
+Node;AmplifyShaderEditor.VertexColorNode;382;-2130.429,-2290.095;Inherit;False;0;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
+Node;AmplifyShaderEditor.ToggleSwitchNode;647;-1949.402,-2223.825;Inherit;False;Property;_UseShadowMaskVertexColorA;Use ShadowMask (VertexColorA);11;0;Create;True;0;0;0;False;0;False;0;True;2;0;FLOAT;1;False;1;FLOAT;1;False;1;FLOAT;0
+Node;AmplifyShaderEditor.VertexToFragmentNode;1161;-1654.25,-2219.182;Inherit;False;False;False;1;0;FLOAT;0;False;1;FLOAT;0
+Node;AmplifyShaderEditor.RegisterLocalVarNode;648;-1421.877,-2270.265;Inherit;False;VertexColorShadowMask;-1;True;1;0;FLOAT;0;False;1;FLOAT;0
 WireConnection;432;0;624;0
 WireConnection;433;0;432;0
 WireConnection;428;0;429;0
@@ -2700,7 +2698,7 @@ WireConnection;381;3;394;0
 WireConnection;405;0;393;0
 WireConnection;405;1;381;0
 WireConnection;405;2;392;0
-WireConnection;371;0;647;0
+WireConnection;371;0;1161;0
 WireConnection;371;2;366;0
 WireConnection;371;3;372;0
 WireConnection;369;0;364;0
@@ -2711,12 +2709,10 @@ WireConnection;366;3;369;0
 WireConnection;368;0;364;0
 WireConnection;368;1;365;0
 WireConnection;370;0;371;0
-WireConnection;648;0;647;0
 WireConnection;399;0;383;0
 WireConnection;383;0;649;0
 WireConnection;383;2;405;0
 WireConnection;383;3;393;0
-WireConnection;647;1;382;4
 WireConnection;338;0;337;0
 WireConnection;337;0;335;0
 WireConnection;337;1;336;0
@@ -2778,5 +2774,8 @@ WireConnection;1158;0;1157;0
 WireConnection;1159;0;1160;0
 WireConnection;1159;2;1051;0
 WireConnection;1053;0;1159;0
+WireConnection;647;1;382;4
+WireConnection;1161;0;647;0
+WireConnection;648;0;1161;0
 ASEEND*/
-//CHKSM=DC08B1E7EF1F3037AA3E0519CFC93ABDA0351380
+//CHKSM=7855298A17B809D26B7BDEAB201F5E76FF59595A
