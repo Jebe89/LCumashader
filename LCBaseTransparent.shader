@@ -389,7 +389,7 @@ Shader "LCumashader/BaseTransparent"
 				o.ase_sh.xyz = ShadeSHPerVertex (ase_worldNormal, o.ase_sh.xyz);
 				#endif //sh
 				#endif //nstalm
-				float vertexToFrag1079 = (( _UseShadowMaskVertexColorA )?( v.ase_color.a ):( 1.0 ));
+				float vertexToFrag1079 = v.ase_color.a;
 				o.ase_texcoord1.w = vertexToFrag1079;
 				float4 ase_clipPos = UnityObjectToClipPos(v.vertex);
 				float4 screenPos = ComputeScreenPos(ase_clipPos);
@@ -492,13 +492,13 @@ Shader "LCumashader/BaseTransparent"
 				float GlobalLightFactor1000 = _GlobalLightFactor;
 				float4 lerpResult1008 = lerp( ( _SpecularColor * SpecularPower438 ) , ( _SpecularColor * SpecularPower438 * float4( LightColor208 , 0.0 ) ) , GlobalLightFactor1000);
 				float vertexToFrag1079 = i.ase_texcoord1.w;
-				float VertexColorShadowMask648 = vertexToFrag1079;
+				float VertexColorShadowMask648 = (( _UseShadowMaskVertexColorA )?( vertexToFrag1079 ):( 1.0 ));
 				float2 uv_MainTex = i.ase_texcoord3.xy * _MainTex_ST.xy + _MainTex_ST.zw;
 				float4 diff345 = tex2D( _MainTex, uv_MainTex );
 				float DiffuseLightFactor1076 = _DiffuseLightFactor;
 				float4 lerpResult1002 = lerp( diff345 , ( diff345 * float4( LightColor208 , 0.0 ) ) , DiffuseLightFactor1076);
 				float4 lit_diff349 = lerpResult1002;
-				float4 toon_diff370 = ( vertexToFrag1079 == 1.0 ? ( 0.5 >= _ToonBrightColor.a ? ( _ToonBrightColor * lit_diff349 ) : ( _ToonBrightColor + lit_diff349 ) ) : lit_diff349 );
+				float4 toon_diff370 = ( (( _UseShadowMaskVertexColorA )?( vertexToFrag1079 ):( 1.0 )) == 1.0 ? ( 0.5 >= _ToonBrightColor.a ? ( _ToonBrightColor * lit_diff349 ) : ( _ToonBrightColor + lit_diff349 ) ) : lit_diff349 );
 				float2 uv_ShadTex = i.ase_texcoord3.xy * _ShadTex_ST.xy + _ShadTex_ST.zw;
 				float4 shad_c330 = tex2D( _ShadTex, uv_ShadTex );
 				float4 lerpResult1004 = lerp( ( shad_c330 * _GlobalShadowColor ) , ( shad_c330 * _GlobalShadowColor * float4( LightColor208 , 0.0 ) ) , DiffuseLightFactor1076);
@@ -851,7 +851,7 @@ Shader "LCumashader/BaseTransparent"
 				o.ase_sh.xyz = ShadeSHPerVertex (ase_worldNormal, o.ase_sh.xyz);
 				#endif //sh
 				#endif //nstalm
-				float vertexToFrag1079 = (( _UseShadowMaskVertexColorA )?( v.ase_color.a ):( 1.0 ));
+				float vertexToFrag1079 = v.ase_color.a;
 				o.ase_texcoord1.w = vertexToFrag1079;
 				float4 ase_clipPos = UnityObjectToClipPos(v.vertex);
 				float4 screenPos = ComputeScreenPos(ase_clipPos);
@@ -954,13 +954,13 @@ Shader "LCumashader/BaseTransparent"
 				float GlobalLightFactor1000 = _GlobalLightFactor;
 				float4 lerpResult1008 = lerp( ( _SpecularColor * SpecularPower438 ) , ( _SpecularColor * SpecularPower438 * float4( LightColor208 , 0.0 ) ) , GlobalLightFactor1000);
 				float vertexToFrag1079 = i.ase_texcoord1.w;
-				float VertexColorShadowMask648 = vertexToFrag1079;
+				float VertexColorShadowMask648 = (( _UseShadowMaskVertexColorA )?( vertexToFrag1079 ):( 1.0 ));
 				float2 uv_MainTex = i.ase_texcoord3.xy * _MainTex_ST.xy + _MainTex_ST.zw;
 				float4 diff345 = tex2D( _MainTex, uv_MainTex );
 				float DiffuseLightFactor1076 = _DiffuseLightFactor;
 				float4 lerpResult1002 = lerp( diff345 , ( diff345 * float4( LightColor208 , 0.0 ) ) , DiffuseLightFactor1076);
 				float4 lit_diff349 = lerpResult1002;
-				float4 toon_diff370 = ( vertexToFrag1079 == 1.0 ? ( 0.5 >= _ToonBrightColor.a ? ( _ToonBrightColor * lit_diff349 ) : ( _ToonBrightColor + lit_diff349 ) ) : lit_diff349 );
+				float4 toon_diff370 = ( (( _UseShadowMaskVertexColorA )?( vertexToFrag1079 ):( 1.0 )) == 1.0 ? ( 0.5 >= _ToonBrightColor.a ? ( _ToonBrightColor * lit_diff349 ) : ( _ToonBrightColor + lit_diff349 ) ) : lit_diff349 );
 				float2 uv_ShadTex = i.ase_texcoord3.xy * _ShadTex_ST.xy + _ShadTex_ST.zw;
 				float4 shad_c330 = tex2D( _ShadTex, uv_ShadTex );
 				float4 lerpResult1004 = lerp( ( shad_c330 * _GlobalShadowColor ) , ( shad_c330 * _GlobalShadowColor * float4( LightColor208 , 0.0 ) ) , DiffuseLightFactor1076);
@@ -1298,7 +1298,7 @@ Shader "LCumashader/BaseTransparent"
 				o.ase_sh.xyz = ShadeSHPerVertex (ase_worldNormal, o.ase_sh.xyz);
 				#endif //sh
 				#endif //nstalm
-				float vertexToFrag1079 = (( _UseShadowMaskVertexColorA )?( v.ase_color.a ):( 1.0 ));
+				float vertexToFrag1079 = v.ase_color.a;
 				o.ase_texcoord1.w = vertexToFrag1079;
 				float4 ase_clipPos = UnityObjectToClipPos(v.vertex);
 				float4 screenPos = ComputeScreenPos(ase_clipPos);
@@ -1394,13 +1394,13 @@ Shader "LCumashader/BaseTransparent"
 				float GlobalLightFactor1000 = _GlobalLightFactor;
 				float4 lerpResult1008 = lerp( ( _SpecularColor * SpecularPower438 ) , ( _SpecularColor * SpecularPower438 * float4( LightColor208 , 0.0 ) ) , GlobalLightFactor1000);
 				float vertexToFrag1079 = i.ase_texcoord1.w;
-				float VertexColorShadowMask648 = vertexToFrag1079;
+				float VertexColorShadowMask648 = (( _UseShadowMaskVertexColorA )?( vertexToFrag1079 ):( 1.0 ));
 				float2 uv_MainTex = i.ase_texcoord3.xy * _MainTex_ST.xy + _MainTex_ST.zw;
 				float4 diff345 = tex2D( _MainTex, uv_MainTex );
 				float DiffuseLightFactor1076 = _DiffuseLightFactor;
 				float4 lerpResult1002 = lerp( diff345 , ( diff345 * float4( LightColor208 , 0.0 ) ) , DiffuseLightFactor1076);
 				float4 lit_diff349 = lerpResult1002;
-				float4 toon_diff370 = ( vertexToFrag1079 == 1.0 ? ( 0.5 >= _ToonBrightColor.a ? ( _ToonBrightColor * lit_diff349 ) : ( _ToonBrightColor + lit_diff349 ) ) : lit_diff349 );
+				float4 toon_diff370 = ( (( _UseShadowMaskVertexColorA )?( vertexToFrag1079 ):( 1.0 )) == 1.0 ? ( 0.5 >= _ToonBrightColor.a ? ( _ToonBrightColor * lit_diff349 ) : ( _ToonBrightColor + lit_diff349 ) ) : lit_diff349 );
 				float2 uv_ShadTex = i.ase_texcoord3.xy * _ShadTex_ST.xy + _ShadTex_ST.zw;
 				float4 shad_c330 = tex2D( _ShadTex, uv_ShadTex );
 				float4 lerpResult1004 = lerp( ( shad_c330 * _GlobalShadowColor ) , ( shad_c330 * _GlobalShadowColor * float4( LightColor208 , 0.0 ) ) , DiffuseLightFactor1076);
@@ -1891,10 +1891,10 @@ Node;AmplifyShaderEditor.RegisterLocalVarNode;1039;-4374.888,2286.981;Inherit;Fa
 Node;AmplifyShaderEditor.CustomExpressionNode;798;-4840.444,1715.438;Inherit;False;return normalize(UNITY_MATRIX_V[2].xyz + UNITY_MATRIX_V[1].xyz)@;3;Create;0;Default LightDir;False;False;0;;False;0;1;FLOAT3;0
 Node;AmplifyShaderEditor.CustomExpressionNode;1078;-4687.434,2260.548;Inherit;False;return any(_WorldSpaceLightPos0.xyz)@;1;Create;0;Is There A Light;True;False;0;;False;0;1;FLOAT;0
 Node;AmplifyShaderEditor.Compare;1077;-4535.503,2285.204;Inherit;False;0;4;0;FLOAT;0;False;1;FLOAT;1;False;2;FLOAT;0;False;3;FLOAT;1;False;1;FLOAT;0
-Node;AmplifyShaderEditor.VertexToFragmentNode;1079;-1655.046,-2212.688;Inherit;False;False;False;1;0;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.RegisterLocalVarNode;648;-1440.009,-2263.777;Inherit;False;VertexColorShadowMask;-1;True;1;0;FLOAT;0;False;1;FLOAT;0
-Node;AmplifyShaderEditor.VertexColorNode;382;-2117.561,-2289.607;Inherit;False;0;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
-Node;AmplifyShaderEditor.ToggleSwitchNode;647;-1947.534,-2221.337;Inherit;False;Property;_UseShadowMaskVertexColorA;Use ShadowMask (VertexColorA);5;0;Create;True;0;0;0;False;0;False;0;True;2;0;FLOAT;1;False;1;FLOAT;1;False;1;FLOAT;0
+Node;AmplifyShaderEditor.VertexColorNode;382;-2133.561,-2289.607;Inherit;False;0;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
+Node;AmplifyShaderEditor.ToggleSwitchNode;647;-1749.534,-2226.337;Inherit;False;Property;_UseShadowMaskVertexColorA;Use ShadowMask (VertexColorA);5;0;Create;True;0;0;0;False;0;False;0;True;2;0;FLOAT;1;False;1;FLOAT;1;False;1;FLOAT;0
+Node;AmplifyShaderEditor.VertexToFragmentNode;1079;-1969.458,-2199.541;Inherit;False;False;False;1;0;FLOAT;0;False;1;FLOAT;0
 WireConnection;319;0;315;0
 WireConnection;322;0;319;0
 WireConnection;636;0;322;0
@@ -2079,7 +2079,7 @@ WireConnection;381;3;394;0
 WireConnection;405;0;393;0
 WireConnection;405;1;381;0
 WireConnection;405;2;392;0
-WireConnection;371;0;1079;0
+WireConnection;371;0;647;0
 WireConnection;371;2;366;0
 WireConnection;371;3;372;0
 WireConnection;369;0;364;0
@@ -2280,8 +2280,8 @@ WireConnection;800;3;798;0
 WireConnection;1039;0;1077;0
 WireConnection;1077;0;1078;0
 WireConnection;1077;2;1037;0
-WireConnection;1079;0;647;0
-WireConnection;648;0;1079;0
-WireConnection;647;1;382;4
+WireConnection;648;0;647;0
+WireConnection;647;1;1079;0
+WireConnection;1079;0;382;4
 ASEEND*/
-//CHKSM=C9EC45121ABC82B47A612E5E9DEA28F951D46F90
+//CHKSM=F9D113E2B54EA4B9FEE102B4CF3C4CF1BCDA8085

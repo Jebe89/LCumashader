@@ -724,7 +724,7 @@ Shader "LCumashader/Face"
 				o.ase_sh.xyz = ShadeSHPerVertex (ase_worldNormal, o.ase_sh.xyz);
 				#endif //sh
 				#endif //nstalm
-				float vertexToFrag1146 = (( _UseShadowMaskVertexColorA )?( v.ase_color.a ):( 1.0 ));
+				float vertexToFrag1146 = v.ase_color.a;
 				o.ase_texcoord1.w = vertexToFrag1146;
 				
 				o.ase_texcoord3.xy = v.ase_texcoord.xy;
@@ -835,13 +835,13 @@ Shader "LCumashader/Face"
 				float GlobalLightFactor1023 = _GlobalLightFactor;
 				float4 lerpResult1031 = lerp( ( _SpecularColor * SpecularPower438 ) , ( _SpecularColor * SpecularPower438 * float4( LightColor208 , 0.0 ) ) , GlobalLightFactor1023);
 				float vertexToFrag1146 = i.ase_texcoord1.w;
-				float VertexColorShadowMask648 = vertexToFrag1146;
+				float VertexColorShadowMask648 = (( _UseShadowMaskVertexColorA )?( vertexToFrag1146 ):( 1.0 ));
 				float2 uv_MainTex = i.ase_texcoord3.xy * _MainTex_ST.xy + _MainTex_ST.zw;
 				float4 diff345 = tex2D( _MainTex, uv_MainTex );
 				float DiffuseLightFactor1093 = _DiffuseLightFactor;
 				float4 lerpResult1025 = lerp( diff345 , ( diff345 * float4( LightColor208 , 0.0 ) ) , DiffuseLightFactor1093);
 				float4 lit_diff349 = lerpResult1025;
-				float4 toonbright_diff370 = ( vertexToFrag1146 == 1.0 ? ( 0.5 >= _ToonBrightColor.a ? ( _ToonBrightColor * lit_diff349 ) : ( _ToonBrightColor + lit_diff349 ) ) : lit_diff349 );
+				float4 toonbright_diff370 = ( (( _UseShadowMaskVertexColorA )?( vertexToFrag1146 ):( 1.0 )) == 1.0 ? ( 0.5 >= _ToonBrightColor.a ? ( _ToonBrightColor * lit_diff349 ) : ( _ToonBrightColor + lit_diff349 ) ) : lit_diff349 );
 				float2 uv_ShadTex = i.ase_texcoord3.xy * _ShadTex_ST.xy + _ShadTex_ST.zw;
 				float4 shad_c330 = tex2D( _ShadTex, uv_ShadTex );
 				float4 lerpResult1027 = lerp( ( shad_c330 * _GlobalShadowColor ) , ( shad_c330 * _GlobalShadowColor * float4( LightColor208 , 0.0 ) ) , DiffuseLightFactor1093);
@@ -1202,7 +1202,7 @@ Shader "LCumashader/Face"
 				o.ase_sh.xyz = ShadeSHPerVertex (ase_worldNormal, o.ase_sh.xyz);
 				#endif //sh
 				#endif //nstalm
-				float vertexToFrag1146 = (( _UseShadowMaskVertexColorA )?( v.ase_color.a ):( 1.0 ));
+				float vertexToFrag1146 = v.ase_color.a;
 				o.ase_texcoord1.w = vertexToFrag1146;
 				
 				o.ase_texcoord3.xy = v.ase_texcoord.xy;
@@ -1313,13 +1313,13 @@ Shader "LCumashader/Face"
 				float GlobalLightFactor1023 = _GlobalLightFactor;
 				float4 lerpResult1031 = lerp( ( _SpecularColor * SpecularPower438 ) , ( _SpecularColor * SpecularPower438 * float4( LightColor208 , 0.0 ) ) , GlobalLightFactor1023);
 				float vertexToFrag1146 = i.ase_texcoord1.w;
-				float VertexColorShadowMask648 = vertexToFrag1146;
+				float VertexColorShadowMask648 = (( _UseShadowMaskVertexColorA )?( vertexToFrag1146 ):( 1.0 ));
 				float2 uv_MainTex = i.ase_texcoord3.xy * _MainTex_ST.xy + _MainTex_ST.zw;
 				float4 diff345 = tex2D( _MainTex, uv_MainTex );
 				float DiffuseLightFactor1093 = _DiffuseLightFactor;
 				float4 lerpResult1025 = lerp( diff345 , ( diff345 * float4( LightColor208 , 0.0 ) ) , DiffuseLightFactor1093);
 				float4 lit_diff349 = lerpResult1025;
-				float4 toonbright_diff370 = ( vertexToFrag1146 == 1.0 ? ( 0.5 >= _ToonBrightColor.a ? ( _ToonBrightColor * lit_diff349 ) : ( _ToonBrightColor + lit_diff349 ) ) : lit_diff349 );
+				float4 toonbright_diff370 = ( (( _UseShadowMaskVertexColorA )?( vertexToFrag1146 ):( 1.0 )) == 1.0 ? ( 0.5 >= _ToonBrightColor.a ? ( _ToonBrightColor * lit_diff349 ) : ( _ToonBrightColor + lit_diff349 ) ) : lit_diff349 );
 				float2 uv_ShadTex = i.ase_texcoord3.xy * _ShadTex_ST.xy + _ShadTex_ST.zw;
 				float4 shad_c330 = tex2D( _ShadTex, uv_ShadTex );
 				float4 lerpResult1027 = lerp( ( shad_c330 * _GlobalShadowColor ) , ( shad_c330 * _GlobalShadowColor * float4( LightColor208 , 0.0 ) ) , DiffuseLightFactor1093);
@@ -1665,7 +1665,7 @@ Shader "LCumashader/Face"
 				o.ase_sh.xyz = ShadeSHPerVertex (ase_worldNormal, o.ase_sh.xyz);
 				#endif //sh
 				#endif //nstalm
-				float vertexToFrag1146 = (( _UseShadowMaskVertexColorA )?( v.ase_color.a ):( 1.0 ));
+				float vertexToFrag1146 = v.ase_color.a;
 				o.ase_texcoord1.w = vertexToFrag1146;
 				
 				o.ase_texcoord3.xy = v.ase_texcoord.xy;
@@ -1769,13 +1769,13 @@ Shader "LCumashader/Face"
 				float GlobalLightFactor1023 = _GlobalLightFactor;
 				float4 lerpResult1031 = lerp( ( _SpecularColor * SpecularPower438 ) , ( _SpecularColor * SpecularPower438 * float4( LightColor208 , 0.0 ) ) , GlobalLightFactor1023);
 				float vertexToFrag1146 = i.ase_texcoord1.w;
-				float VertexColorShadowMask648 = vertexToFrag1146;
+				float VertexColorShadowMask648 = (( _UseShadowMaskVertexColorA )?( vertexToFrag1146 ):( 1.0 ));
 				float2 uv_MainTex = i.ase_texcoord3.xy * _MainTex_ST.xy + _MainTex_ST.zw;
 				float4 diff345 = tex2D( _MainTex, uv_MainTex );
 				float DiffuseLightFactor1093 = _DiffuseLightFactor;
 				float4 lerpResult1025 = lerp( diff345 , ( diff345 * float4( LightColor208 , 0.0 ) ) , DiffuseLightFactor1093);
 				float4 lit_diff349 = lerpResult1025;
-				float4 toonbright_diff370 = ( vertexToFrag1146 == 1.0 ? ( 0.5 >= _ToonBrightColor.a ? ( _ToonBrightColor * lit_diff349 ) : ( _ToonBrightColor + lit_diff349 ) ) : lit_diff349 );
+				float4 toonbright_diff370 = ( (( _UseShadowMaskVertexColorA )?( vertexToFrag1146 ):( 1.0 )) == 1.0 ? ( 0.5 >= _ToonBrightColor.a ? ( _ToonBrightColor * lit_diff349 ) : ( _ToonBrightColor + lit_diff349 ) ) : lit_diff349 );
 				float2 uv_ShadTex = i.ase_texcoord3.xy * _ShadTex_ST.xy + _ShadTex_ST.zw;
 				float4 shad_c330 = tex2D( _ShadTex, uv_ShadTex );
 				float4 lerpResult1027 = lerp( ( shad_c330 * _GlobalShadowColor ) , ( shad_c330 * _GlobalShadowColor * float4( LightColor208 , 0.0 ) ) , DiffuseLightFactor1093);
@@ -2270,8 +2270,6 @@ Node;AmplifyShaderEditor.WorldSpaceLightDirHlpNode;799;-5076.389,1734.162;Inheri
 Node;AmplifyShaderEditor.GetLocalVarNode;1117;-4898.455,-354.4457;Inherit;False;1112;FaceCenterPos;1;0;OBJECT;;False;1;FLOAT3;0
 Node;AmplifyShaderEditor.GetLocalVarNode;1116;-4662.27,-438.9152;Inherit;False;1111;FaceUp;1;0;OBJECT;;False;1;FLOAT3;0
 Node;AmplifyShaderEditor.VertexColorNode;382;-2161.61,-2560.786;Inherit;False;0;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
-Node;AmplifyShaderEditor.ToggleSwitchNode;647;-1980.583,-2494.516;Inherit;False;Property;_UseShadowMaskVertexColorA;Use ShadowMask (VertexColorA);3;0;Create;True;0;0;0;False;0;False;0;True;2;0;FLOAT;1;False;1;FLOAT;1;False;1;FLOAT;0
-Node;AmplifyShaderEditor.VertexToFragmentNode;1146;-1679.563,-2486.44;Inherit;False;False;False;1;0;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.RegisterLocalVarNode;648;-1456.058,-2521.956;Inherit;False;VertexColorShadowMask;-1;True;1;0;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.OneMinusNode;921;-3555.365,-683.4718;Inherit;False;1;0;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.RangedFloatNode;920;-3842.668,-689.9721;Inherit;False;Property;_CylinderBlend;CylinderBlend;93;0;Create;True;0;0;0;False;0;False;0.5;0;0;1;0;1;FLOAT;0
@@ -2444,6 +2442,8 @@ Node;AmplifyShaderEditor.Compare;1325;-4630.133,66.4865;Inherit;False;0;4;0;FLOA
 Node;AmplifyShaderEditor.RegisterLocalVarNode;1326;-4823.311,14.71026;Inherit;False;isObjectSpace;-1;True;1;0;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.GetLocalVarNode;1330;-4847.214,358.1496;Inherit;False;1326;isObjectSpace;1;0;OBJECT;;False;1;FLOAT;0
 Node;AmplifyShaderEditor.RangedFloatNode;1323;-5035.466,25.93353;Inherit;False;Property;_ObjectSpace;ObjectSpace;94;2;[Header];[Toggle];Create;True;1;HeadBoneTransform;0;0;False;0;False;1;0;0;0;0;1;FLOAT;0
+Node;AmplifyShaderEditor.ToggleSwitchNode;647;-1765.583,-2496.516;Inherit;False;Property;_UseShadowMaskVertexColorA;Use ShadowMask (VertexColorA);3;0;Create;True;0;0;0;False;0;False;0;True;2;0;FLOAT;1;False;1;FLOAT;1;False;1;FLOAT;0
+Node;AmplifyShaderEditor.VertexToFragmentNode;1146;-1997.563,-2468.44;Inherit;False;False;False;1;0;FLOAT;0;False;1;FLOAT;0
 WireConnection;432;0;624;0
 WireConnection;433;0;432;0
 WireConnection;428;0;429;0
@@ -2617,7 +2617,7 @@ WireConnection;381;3;394;0
 WireConnection;405;0;393;0
 WireConnection;405;1;381;0
 WireConnection;405;2;392;0
-WireConnection;371;0;1146;0
+WireConnection;371;0;647;0
 WireConnection;371;2;366;0
 WireConnection;371;3;372;0
 WireConnection;369;0;364;0
@@ -2826,9 +2826,7 @@ WireConnection;1093;0;1092;0
 WireConnection;1095;0;1094;0
 WireConnection;1095;2;1046;0
 WireConnection;1048;0;1095;0
-WireConnection;647;1;382;4
-WireConnection;1146;0;647;0
-WireConnection;648;0;1146;0
+WireConnection;648;0;647;0
 WireConnection;921;0;920;0
 WireConnection;779;0;802;0
 WireConnection;779;1;933;0
@@ -2995,5 +2993,7 @@ WireConnection;1325;0;1323;0
 WireConnection;1325;2;903;0
 WireConnection;1325;3;1324;0
 WireConnection;1326;0;1323;0
+WireConnection;647;1;1146;0
+WireConnection;1146;0;382;4
 ASEEND*/
-//CHKSM=8349B896FA909E3F90E2A99977B245718D6C35DA
+//CHKSM=5E12D4A24E00C5307AA0E7620E6CF3332CA08DF8
