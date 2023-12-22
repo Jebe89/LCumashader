@@ -1,4 +1,4 @@
-// Made with Amplify Shader Editor v1.9.1.7
+// Made with Amplify Shader Editor v1.9.2
 // Available at the Unity Asset Store - http://u3d.as/y3X 
 Shader "LCumashader/Eye"
 {
@@ -135,8 +135,7 @@ Shader "LCumashader/Eye"
 				ZFail [_StencilZFailFront]
 			}
 			CGPROGRAM
-			#pragma multi_compile_fwdbase
-
+			
 			#pragma vertex vert
 			#pragma fragment frag
 			#pragma multi_compile_fwdbase
@@ -293,6 +292,11 @@ Shader "LCumashader/Eye"
 				#endif
 			}
 			
+			float3 ShadeSH9out( half4 Normal )
+			{
+				return ShadeSH9(Normal);
+			}
+			
 			float3 MaxShadeSH9(  )
 			{
 				return max(ShadeSH9(half4(0, 0, 0, 1)).rgb, ShadeSH9(half4(0, -1, 0, 1)).rgb);
@@ -306,8 +310,8 @@ Shader "LCumashader/Eye"
 				float3 normal : NORMAL;
 				UNITY_VERTEX_INPUT_INSTANCE_ID
 				float4 ase_texcoord : TEXCOORD0;
-				float4 texcoord1 : TEXCOORD1;
-				float4 texcoord2 : TEXCOORD2;
+				float4 ase_texcoord1 : TEXCOORD1;
+				float4 ase_texcoord2 : TEXCOORD2;
 			};
 			
 			struct v2f
@@ -319,9 +323,7 @@ Shader "LCumashader/Eye"
 				float4 ase_texcoord2 : TEXCOORD2;
 				float4 ase_texcoord3 : TEXCOORD3;
 				UNITY_SHADOW_COORDS(4)
-				float4 ase_lmap : TEXCOORD5;
-				float4 ase_sh : TEXCOORD6;
-				float4 ase_texcoord7 : TEXCOORD7;
+				float4 ase_texcoord5 : TEXCOORD5;
 			};
 			
 			v2f vert ( appdata v )
@@ -377,27 +379,9 @@ Shader "LCumashader/Eye"
 				o.ase_texcoord2.xyz = ase_worldPos;
 				float3 ase_worldNormal = UnityObjectToWorldNormal(v.normal);
 				o.ase_texcoord3.xyz = ase_worldNormal;
-				#ifdef DYNAMICLIGHTMAP_ON //dynlm
-				o.ase_lmap.zw = v.texcoord2.xy * unity_DynamicLightmapST.xy + unity_DynamicLightmapST.zw;
-				#endif //dynlm
-				#ifdef LIGHTMAP_ON //stalm
-				o.ase_lmap.xy = v.texcoord1.xy * unity_LightmapST.xy + unity_LightmapST.zw;
-				#endif //stalm
-				#ifndef LIGHTMAP_ON //nstalm
-				#if UNITY_SHOULD_SAMPLE_SH //sh
-				o.ase_sh.xyz = 0;
-				#ifdef VERTEXLIGHT_ON //vl
-				o.ase_sh.xyz += Shade4PointLights (
-				unity_4LightPosX0, unity_4LightPosY0, unity_4LightPosZ0,
-				unity_LightColor[0].rgb, unity_LightColor[1].rgb, unity_LightColor[2].rgb, unity_LightColor[3].rgb,
-				unity_4LightAtten0, ase_worldPos, ase_worldNormal);
-				#endif //vl
-				o.ase_sh.xyz = ShadeSHPerVertex (ase_worldNormal, o.ase_sh.xyz);
-				#endif //sh
-				#endif //nstalm
 				float2 temp_cast_0 = (0.5).xx;
 				float2 appendResult1003 = (float2(_hi00Offset.x , _hi00Offset.y));
-				float2 temp_output_1002_0 = ( ( v.texcoord1.xy - temp_cast_0 ) + appendResult1003 );
+				float2 temp_output_1002_0 = ( ( v.ase_texcoord1.xy - temp_cast_0 ) + appendResult1003 );
 				float hi00ctrl1599 = _hi00AutoWaggle;
 				float hi00Auto1604 = ( ( sin( ( asin( _SinTime.w ) * _hi00Frequency ) ) + ( sin( ( asin( _CosTime.w ) * _hi00NoiseFrequency ) ) * _hi00NoiseFactor ) ) * _hi00WaggleRange );
 				float temp_output_1230_0 = ( ( ( hi00ctrl1599 == 1.0 ? ( hi00Auto1604 + _hi00LRotation ) : _hi00LRotation ) * UNITY_PI ) / 45.0 );
@@ -411,7 +395,7 @@ Shader "LCumashader/Eye"
 				float2 hi00L1085 = ( float2( 0,0 ) + appendResult1021 + 0.5 );
 				float2 temp_cast_4 = (0.5).xx;
 				float2 appendResult1056 = (float2(_hi00Offset.z , _hi00Offset.w));
-				float2 temp_output_1057_0 = ( ( v.texcoord1.xy - temp_cast_4 ) + appendResult1056 );
+				float2 temp_output_1057_0 = ( ( v.ase_texcoord1.xy - temp_cast_4 ) + appendResult1056 );
 				float temp_output_1231_0 = ( ( ( hi00ctrl1599 == 1.0 ? ( hi00Auto1604 + _hi00RRotation ) : _hi00RRotation ) * UNITY_PI ) / 45.0 );
 				float hi00RSin1054 = sin( temp_output_1231_0 );
 				float2 temp_output_1058_0 = ( temp_output_1057_0 * hi00RSin1054 );
@@ -425,7 +409,7 @@ Shader "LCumashader/Eye"
 				o.ase_texcoord1.zw = vertexToFrag1948;
 				float2 temp_cast_8 = (0.5).xx;
 				float2 appendResult1091 = (float2(_hi01Offset.x , _hi01Offset.y));
-				float2 temp_output_1092_0 = ( ( v.texcoord1.xy - temp_cast_8 ) + appendResult1091 );
+				float2 temp_output_1092_0 = ( ( v.ase_texcoord1.xy - temp_cast_8 ) + appendResult1091 );
 				float hi01ctrl1640 = _hi01AutoWaggle;
 				float hi01Auto1638 = ( ( sin( ( asin( _SinTime.w ) * _hi01Frequency ) ) + ( sin( ( asin( _CosTime.w ) * _hi01NoiseFrequency ) ) * _hi01NoiseFactor ) ) * _hi01WaggleRange );
 				float temp_output_1147_0 = ( ( ( hi01ctrl1640 == 1.0 ? ( hi01Auto1638 + _hi01LRotation ) : _hi01LRotation ) * UNITY_PI ) / 45.0 );
@@ -439,7 +423,7 @@ Shader "LCumashader/Eye"
 				float2 hi01L1144 = ( float2( 0,0 ) + appendResult1105 + 0.5 );
 				float2 temp_cast_12 = (0.5).xx;
 				float2 appendResult1115 = (float2(_hi01Offset.z , _hi01Offset.w));
-				float2 temp_output_1116_0 = ( ( v.texcoord1.xy - temp_cast_12 ) + appendResult1115 );
+				float2 temp_output_1116_0 = ( ( v.ase_texcoord1.xy - temp_cast_12 ) + appendResult1115 );
 				float temp_output_1152_0 = ( ( ( hi01ctrl1640 == 1.0 ? ( hi01Auto1638 + _hi01RRotation ) : _hi01RRotation ) * UNITY_PI ) / 45.0 );
 				float hi01RSin1159 = sin( temp_output_1152_0 );
 				float2 temp_output_1117_0 = ( temp_output_1116_0 * hi01RSin1159 );
@@ -450,10 +434,10 @@ Shader "LCumashader/Eye"
 				float2 appendResult1129 = (float2(( (temp_output_1117_0).y + ( (temp_output_1116_0).x * hi01RCos1160 ) ) , ( ( hi01RCos1160 * (temp_output_1116_0).y ) - (temp_output_1117_0).x )));
 				float2 hi01R1143 = ( float2( 0,0 ) + appendResult1129 + 0.5 );
 				float2 vertexToFrag1949 = ( v.ase_texcoord.y >= 0.5 ? hi01L1144 : hi01R1143 );
-				o.ase_texcoord7.xy = vertexToFrag1949;
+				o.ase_texcoord5.xy = vertexToFrag1949;
 				float2 temp_cast_16 = (0.5).xx;
 				float2 appendResult1170 = (float2(_hi02Offset.x , _hi02Offset.y));
-				float2 temp_output_1171_0 = ( ( v.texcoord2.xy - temp_cast_16 ) + appendResult1170 );
+				float2 temp_output_1171_0 = ( ( v.ase_texcoord2.xy - temp_cast_16 ) + appendResult1170 );
 				float hi02ctrl1668 = _hi02AutoWaggle;
 				float hi02Auto1667 = ( ( sin( ( asin( _SinTime.w ) * _hi02Frequency ) ) + ( sin( ( asin( _CosTime.w ) * _hi02NoiseFrequency ) ) * _hi02NoiseFactor ) ) * _hi02WaggleRange );
 				float temp_output_1195_0 = ( ( ( hi02ctrl1668 == 1.0 ? ( hi02Auto1667 + _hi02Rotation ) : _hi02Rotation ) * UNITY_PI ) / 45.0 );
@@ -465,14 +449,13 @@ Shader "LCumashader/Eye"
 				float2 temp_cast_19 = (0.5).xx;
 				float2 appendResult1183 = (float2(( (temp_output_1172_0).y + ( (temp_output_1171_0).x * hi02Cos1210 ) ) , ( ( hi02Cos1210 * (temp_output_1171_0).y ) - (temp_output_1172_0).x )));
 				float2 vertexToFrag1950 = ( float2( 0,0 ) + appendResult1183 + 0.5 );
-				o.ase_texcoord7.zw = vertexToFrag1950;
+				o.ase_texcoord5.zw = vertexToFrag1950;
 				
 				o.ase_texcoord1.xy = v.ase_texcoord.xy;
 				
 				//setting value to unused interpolator channels and avoid initialization warnings
 				o.ase_texcoord2.w = 0;
 				o.ase_texcoord3.w = 0;
-				o.ase_sh.w = 0;
 				
 				v.vertex.xyz += ( v.ase_texcoord.y >= 0.5 ? ( _UseCustomTransform == 1.0 ? mul( (( _FakeEyeTrackingL )?( ( _VertexOffsetL + appendResult1836 ) ):( _VertexOffsetL )), CustomMatrixL1802 ) : (( _FakeEyeTrackingL )?( ( _VertexOffsetL + appendResult1836 ) ):( _VertexOffsetL )) ) : ( _UseCustomTransform == 1.0 ? mul( (( _FakeEyeTrackingR )?( ( _VertexOffsetR + appendResult1898 ) ):( _VertexOffsetR )), CustomMatrixR1801 ) : (( _FakeEyeTrackingR )?( ( _VertexOffsetR + appendResult1898 ) ):( _VertexOffsetR )) ) );
 				o.pos = UnityObjectToClipPos(v.vertex);
@@ -511,49 +494,46 @@ Shader "LCumashader/Eye"
 				float4 ase_lightColor = _LightColor0;
 				#endif //aselc
 				float3 temp_cast_0 = (_MinDirectLight).xxx;
-				float3 clampResult1960 = clamp( ase_lightColor.rgb , temp_cast_0 , float3( 2,2,2 ) );
+				float3 temp_output_1971_0 = max( ase_lightColor.rgb , temp_cast_0 );
 				float3 worldPos1939 = ase_worldPos;
 				float localPureLightAttenuation1939 = PureLightAttenuation( worldPos1939 );
-				float3 temp_output_1942_0 = ( clampResult1960 * (( _ShadowinLightColor )?( ase_atten ):( localPureLightAttenuation1939 )) );
+				float3 temp_output_1942_0 = ( temp_output_1971_0 * (( _ShadowinLightColor )?( ase_atten ):( localPureLightAttenuation1939 )) );
+				float3 temp_cast_1 = (_MinDirectLight).xxx;
+				float3 temp_cast_2 = (_MinDirectLight).xxx;
 				#ifdef UNITY_PASS_FORWARDADD
 				float3 staticSwitch1941 = temp_output_1942_0;
 				#else
-				float3 staticSwitch1941 = clampResult1960;
+				float3 staticSwitch1941 = temp_output_1971_0;
 				#endif
-				float3 temp_cast_1 = (_MaxDirectLight).xxx;
-				float3 clampResult1704 = clamp( (( _NoShadowinDirectionalLightColor )?( staticSwitch1941 ):( temp_output_1942_0 )) , float3( 0,0,0 ) , temp_cast_1 );
-				UnityGIInput data304;
-				UNITY_INITIALIZE_OUTPUT( UnityGIInput, data304 );
-				#if defined(LIGHTMAP_ON) || defined(DYNAMICLIGHTMAP_ON) //dylm304
-				data304.lightmapUV = i.ase_lmap;
-				#endif //dylm304
-				#if UNITY_SHOULD_SAMPLE_SH //fsh304
-				data304.ambient = i.ase_sh;
-				#endif //fsh304
-				UnityGI gi304 = UnityGI_Base(data304, 1, ase_worldNormal);
+				float3 temp_cast_3 = (_MaxDirectLight).xxx;
+				float4 Normal1973 = float4( 0,0,0,0 );
+				float3 localShadeSH9out1973 = ShadeSH9out( Normal1973 );
 				float3 localMaxShadeSH9876 = MaxShadeSH9();
-				float3 temp_cast_2 = (_MinIndirectLight).xxx;
-				float3 temp_cast_3 = (_MaxIndirectLight).xxx;
-				float3 clampResult1705 = clamp( (( _UnifyIndirectDiffuseLight )?( localMaxShadeSH9876 ):( gi304.indirect.diffuse )) , temp_cast_2 , temp_cast_3 );
-				float3 temp_output_1706_0 = max( clampResult1704 , clampResult1705 );
+				float3 temp_cast_4 = (_MinIndirectLight).xxx;
+				float3 temp_cast_5 = (_MaxIndirectLight).xxx;
+				float3 temp_output_1706_0 = max( min( (( _NoShadowinDirectionalLightColor )?( staticSwitch1941 ):( temp_output_1942_0 )) , temp_cast_3 ) , min( max( (( _UnifyIndirectDiffuseLight )?( localMaxShadeSH9876 ):( localShadeSH9out1973 )) , temp_cast_4 ) , temp_cast_5 ) );
+				float3 temp_cast_6 = (_MinDirectLight).xxx;
+				float3 temp_cast_7 = (_MaxDirectLight).xxx;
+				float3 temp_cast_8 = (_MinIndirectLight).xxx;
+				float3 temp_cast_9 = (_MaxIndirectLight).xxx;
 				float grayscale1945 = dot(temp_output_1706_0, float3(0.299,0.587,0.114));
-				float3 temp_cast_4 = (grayscale1945).xxx;
-				float3 lerpResult1944 = lerp( temp_output_1706_0 , temp_cast_4 , _LightColorGrayScale);
+				float3 temp_cast_10 = (grayscale1945).xxx;
+				float3 lerpResult1944 = lerp( temp_output_1706_0 , temp_cast_10 , _LightColorGrayScale);
 				float3 LightColor208 = lerpResult1944;
 				float EyeLightFactor1708 = _EyeLightFactor;
 				float4 lerpResult1712 = lerp( (( _EyeShadow )?( lerpResult1325 ):( temp_output_1425_0 )) , ( (( _EyeShadow )?( lerpResult1325 ):( temp_output_1425_0 )) * float4( LightColor208 , 0.0 ) ) , EyeLightFactor1708);
 				float3 appendResult1304 = (float3(_hi00Strength , _hi01Strength , _hi02Strength));
 				float2 vertexToFrag1948 = i.ase_texcoord1.zw;
 				float2 hi00UV1089 = vertexToFrag1948;
-				float4 temp_cast_6 = (_hi00Step).xxxx;
-				float2 vertexToFrag1949 = i.ase_texcoord7.xy;
+				float4 temp_cast_12 = (_hi00Step).xxxx;
+				float2 vertexToFrag1949 = i.ase_texcoord5.xy;
 				float2 hi01UV1165 = vertexToFrag1949;
-				float4 temp_cast_7 = (_hi01Step).xxxx;
-				float2 vertexToFrag1950 = i.ase_texcoord7.zw;
+				float4 temp_cast_13 = (_hi01Step).xxxx;
+				float2 vertexToFrag1950 = i.ase_texcoord5.zw;
 				float2 hi02UV1216 = vertexToFrag1950;
-				float4 temp_cast_8 = (_hi02Step).xxxx;
+				float4 temp_cast_14 = (_hi02Step).xxxx;
 				float3 weightedBlendVar1307 = appendResult1304;
-				float4 weightedBlend1307 = ( weightedBlendVar1307.x*(( _hi00Toggle )?( saturate( ( ( tex2D( _hi00, hi00UV1089 ) - temp_cast_6 ) / _hi00StepFeather ) ) ):( float4( 0,0,0,0 ) )) + weightedBlendVar1307.y*(( _hi01Toggle )?( saturate( ( ( tex2D( _hi01, hi01UV1165 ) - temp_cast_7 ) / _hi01StepFeather ) ) ):( float4( 0,0,0,0 ) )) + weightedBlendVar1307.z*(( _hi02Toggle )?( saturate( ( ( tex2D( _hi02, hi02UV1216 ) - temp_cast_8 ) / _hi02StepFeather ) ) ):( float4( 0,0,0,0 ) )) );
+				float4 weightedBlend1307 = ( weightedBlendVar1307.x*(( _hi00Toggle )?( saturate( ( ( tex2D( _hi00, hi00UV1089 ) - temp_cast_12 ) / _hi00StepFeather ) ) ):( float4( 0,0,0,0 ) )) + weightedBlendVar1307.y*(( _hi01Toggle )?( saturate( ( ( tex2D( _hi01, hi01UV1165 ) - temp_cast_13 ) / _hi01StepFeather ) ) ):( float4( 0,0,0,0 ) )) + weightedBlendVar1307.z*(( _hi02Toggle )?( saturate( ( ( tex2D( _hi02, hi02UV1216 ) - temp_cast_14 ) / _hi02StepFeather ) ) ):( float4( 0,0,0,0 ) )) );
 				float4 lerpResult1378 = lerp( weightedBlend1307 , ( weightedBlend1307 * Shadow1322 ) , shad_lerp1312);
 				float HighlightLightFactor1709 = _HighlightLightFactor;
 				float4 lerpResult1713 = lerp( (( _HighLightShadow )?( lerpResult1378 ):( weightedBlend1307 )) , ( (( _HighLightShadow )?( lerpResult1378 ):( weightedBlend1307 )) * float4( LightColor208 , 0.0 ) ) , HighlightLightFactor1709);
@@ -564,8 +544,8 @@ Shader "LCumashader/Eye"
 				float4 Emissive600 = tex2D( _EmiTex, uv_EmiTex );
 				float4 Refined_diff612 = ( lerpResult1723 + ( Emissive600 * _EmissiveColor * _EmmisiveStrength ) );
 				float dotResult614 = dot( _UnsaturationColor , Refined_diff612 );
-				float4 temp_cast_11 = (dotResult614).xxxx;
-				float4 lerpResult616 = lerp( temp_cast_11 , Refined_diff612 , _Saturation);
+				float4 temp_cast_17 = (dotResult614).xxxx;
+				float4 lerpResult616 = lerp( temp_cast_17 , Refined_diff612 , _Saturation);
 				float4 output_diff618 = lerpResult616;
 				
 				
@@ -601,8 +581,7 @@ Shader "LCumashader/Eye"
 				ZFail [_StencilZFailFront]
 			}
 			CGPROGRAM
-			#pragma multi_compile_fwdbase
-
+			
 			#pragma vertex vert
 			#pragma fragment frag
 			#pragma multi_compile_fwdadd_fullshadows
@@ -759,6 +738,11 @@ Shader "LCumashader/Eye"
 				#endif
 			}
 			
+			float3 ShadeSH9out( half4 Normal )
+			{
+				return ShadeSH9(Normal);
+			}
+			
 			float3 MaxShadeSH9(  )
 			{
 				return max(ShadeSH9(half4(0, 0, 0, 1)).rgb, ShadeSH9(half4(0, -1, 0, 1)).rgb);
@@ -772,8 +756,8 @@ Shader "LCumashader/Eye"
 				float3 normal : NORMAL;
 				UNITY_VERTEX_INPUT_INSTANCE_ID
 				float4 ase_texcoord : TEXCOORD0;
-				float4 texcoord1 : TEXCOORD1;
-				float4 texcoord2 : TEXCOORD2;
+				float4 ase_texcoord1 : TEXCOORD1;
+				float4 ase_texcoord2 : TEXCOORD2;
 			};
 			
 			struct v2f
@@ -785,9 +769,7 @@ Shader "LCumashader/Eye"
 				float4 ase_texcoord2 : TEXCOORD2;
 				float4 ase_texcoord3 : TEXCOORD3;
 				UNITY_SHADOW_COORDS(4)
-				float4 ase_lmap : TEXCOORD5;
-				float4 ase_sh : TEXCOORD6;
-				float4 ase_texcoord7 : TEXCOORD7;
+				float4 ase_texcoord5 : TEXCOORD5;
 			};
 			
 			v2f vert ( appdata v )
@@ -843,27 +825,9 @@ Shader "LCumashader/Eye"
 				o.ase_texcoord2.xyz = ase_worldPos;
 				float3 ase_worldNormal = UnityObjectToWorldNormal(v.normal);
 				o.ase_texcoord3.xyz = ase_worldNormal;
-				#ifdef DYNAMICLIGHTMAP_ON //dynlm
-				o.ase_lmap.zw = v.texcoord2.xy * unity_DynamicLightmapST.xy + unity_DynamicLightmapST.zw;
-				#endif //dynlm
-				#ifdef LIGHTMAP_ON //stalm
-				o.ase_lmap.xy = v.texcoord1.xy * unity_LightmapST.xy + unity_LightmapST.zw;
-				#endif //stalm
-				#ifndef LIGHTMAP_ON //nstalm
-				#if UNITY_SHOULD_SAMPLE_SH //sh
-				o.ase_sh.xyz = 0;
-				#ifdef VERTEXLIGHT_ON //vl
-				o.ase_sh.xyz += Shade4PointLights (
-				unity_4LightPosX0, unity_4LightPosY0, unity_4LightPosZ0,
-				unity_LightColor[0].rgb, unity_LightColor[1].rgb, unity_LightColor[2].rgb, unity_LightColor[3].rgb,
-				unity_4LightAtten0, ase_worldPos, ase_worldNormal);
-				#endif //vl
-				o.ase_sh.xyz = ShadeSHPerVertex (ase_worldNormal, o.ase_sh.xyz);
-				#endif //sh
-				#endif //nstalm
 				float2 temp_cast_0 = (0.5).xx;
 				float2 appendResult1003 = (float2(_hi00Offset.x , _hi00Offset.y));
-				float2 temp_output_1002_0 = ( ( v.texcoord1.xy - temp_cast_0 ) + appendResult1003 );
+				float2 temp_output_1002_0 = ( ( v.ase_texcoord1.xy - temp_cast_0 ) + appendResult1003 );
 				float hi00ctrl1599 = _hi00AutoWaggle;
 				float hi00Auto1604 = ( ( sin( ( asin( _SinTime.w ) * _hi00Frequency ) ) + ( sin( ( asin( _CosTime.w ) * _hi00NoiseFrequency ) ) * _hi00NoiseFactor ) ) * _hi00WaggleRange );
 				float temp_output_1230_0 = ( ( ( hi00ctrl1599 == 1.0 ? ( hi00Auto1604 + _hi00LRotation ) : _hi00LRotation ) * UNITY_PI ) / 45.0 );
@@ -877,7 +841,7 @@ Shader "LCumashader/Eye"
 				float2 hi00L1085 = ( float2( 0,0 ) + appendResult1021 + 0.5 );
 				float2 temp_cast_4 = (0.5).xx;
 				float2 appendResult1056 = (float2(_hi00Offset.z , _hi00Offset.w));
-				float2 temp_output_1057_0 = ( ( v.texcoord1.xy - temp_cast_4 ) + appendResult1056 );
+				float2 temp_output_1057_0 = ( ( v.ase_texcoord1.xy - temp_cast_4 ) + appendResult1056 );
 				float temp_output_1231_0 = ( ( ( hi00ctrl1599 == 1.0 ? ( hi00Auto1604 + _hi00RRotation ) : _hi00RRotation ) * UNITY_PI ) / 45.0 );
 				float hi00RSin1054 = sin( temp_output_1231_0 );
 				float2 temp_output_1058_0 = ( temp_output_1057_0 * hi00RSin1054 );
@@ -891,7 +855,7 @@ Shader "LCumashader/Eye"
 				o.ase_texcoord1.zw = vertexToFrag1948;
 				float2 temp_cast_8 = (0.5).xx;
 				float2 appendResult1091 = (float2(_hi01Offset.x , _hi01Offset.y));
-				float2 temp_output_1092_0 = ( ( v.texcoord1.xy - temp_cast_8 ) + appendResult1091 );
+				float2 temp_output_1092_0 = ( ( v.ase_texcoord1.xy - temp_cast_8 ) + appendResult1091 );
 				float hi01ctrl1640 = _hi01AutoWaggle;
 				float hi01Auto1638 = ( ( sin( ( asin( _SinTime.w ) * _hi01Frequency ) ) + ( sin( ( asin( _CosTime.w ) * _hi01NoiseFrequency ) ) * _hi01NoiseFactor ) ) * _hi01WaggleRange );
 				float temp_output_1147_0 = ( ( ( hi01ctrl1640 == 1.0 ? ( hi01Auto1638 + _hi01LRotation ) : _hi01LRotation ) * UNITY_PI ) / 45.0 );
@@ -905,7 +869,7 @@ Shader "LCumashader/Eye"
 				float2 hi01L1144 = ( float2( 0,0 ) + appendResult1105 + 0.5 );
 				float2 temp_cast_12 = (0.5).xx;
 				float2 appendResult1115 = (float2(_hi01Offset.z , _hi01Offset.w));
-				float2 temp_output_1116_0 = ( ( v.texcoord1.xy - temp_cast_12 ) + appendResult1115 );
+				float2 temp_output_1116_0 = ( ( v.ase_texcoord1.xy - temp_cast_12 ) + appendResult1115 );
 				float temp_output_1152_0 = ( ( ( hi01ctrl1640 == 1.0 ? ( hi01Auto1638 + _hi01RRotation ) : _hi01RRotation ) * UNITY_PI ) / 45.0 );
 				float hi01RSin1159 = sin( temp_output_1152_0 );
 				float2 temp_output_1117_0 = ( temp_output_1116_0 * hi01RSin1159 );
@@ -916,10 +880,10 @@ Shader "LCumashader/Eye"
 				float2 appendResult1129 = (float2(( (temp_output_1117_0).y + ( (temp_output_1116_0).x * hi01RCos1160 ) ) , ( ( hi01RCos1160 * (temp_output_1116_0).y ) - (temp_output_1117_0).x )));
 				float2 hi01R1143 = ( float2( 0,0 ) + appendResult1129 + 0.5 );
 				float2 vertexToFrag1949 = ( v.ase_texcoord.y >= 0.5 ? hi01L1144 : hi01R1143 );
-				o.ase_texcoord7.xy = vertexToFrag1949;
+				o.ase_texcoord5.xy = vertexToFrag1949;
 				float2 temp_cast_16 = (0.5).xx;
 				float2 appendResult1170 = (float2(_hi02Offset.x , _hi02Offset.y));
-				float2 temp_output_1171_0 = ( ( v.texcoord2.xy - temp_cast_16 ) + appendResult1170 );
+				float2 temp_output_1171_0 = ( ( v.ase_texcoord2.xy - temp_cast_16 ) + appendResult1170 );
 				float hi02ctrl1668 = _hi02AutoWaggle;
 				float hi02Auto1667 = ( ( sin( ( asin( _SinTime.w ) * _hi02Frequency ) ) + ( sin( ( asin( _CosTime.w ) * _hi02NoiseFrequency ) ) * _hi02NoiseFactor ) ) * _hi02WaggleRange );
 				float temp_output_1195_0 = ( ( ( hi02ctrl1668 == 1.0 ? ( hi02Auto1667 + _hi02Rotation ) : _hi02Rotation ) * UNITY_PI ) / 45.0 );
@@ -931,14 +895,13 @@ Shader "LCumashader/Eye"
 				float2 temp_cast_19 = (0.5).xx;
 				float2 appendResult1183 = (float2(( (temp_output_1172_0).y + ( (temp_output_1171_0).x * hi02Cos1210 ) ) , ( ( hi02Cos1210 * (temp_output_1171_0).y ) - (temp_output_1172_0).x )));
 				float2 vertexToFrag1950 = ( float2( 0,0 ) + appendResult1183 + 0.5 );
-				o.ase_texcoord7.zw = vertexToFrag1950;
+				o.ase_texcoord5.zw = vertexToFrag1950;
 				
 				o.ase_texcoord1.xy = v.ase_texcoord.xy;
 				
 				//setting value to unused interpolator channels and avoid initialization warnings
 				o.ase_texcoord2.w = 0;
 				o.ase_texcoord3.w = 0;
-				o.ase_sh.w = 0;
 				
 				v.vertex.xyz += ( v.ase_texcoord.y >= 0.5 ? ( _UseCustomTransform == 1.0 ? mul( (( _FakeEyeTrackingL )?( ( _VertexOffsetL + appendResult1836 ) ):( _VertexOffsetL )), CustomMatrixL1802 ) : (( _FakeEyeTrackingL )?( ( _VertexOffsetL + appendResult1836 ) ):( _VertexOffsetL )) ) : ( _UseCustomTransform == 1.0 ? mul( (( _FakeEyeTrackingR )?( ( _VertexOffsetR + appendResult1898 ) ):( _VertexOffsetR )), CustomMatrixR1801 ) : (( _FakeEyeTrackingR )?( ( _VertexOffsetR + appendResult1898 ) ):( _VertexOffsetR )) ) );
 				o.pos = UnityObjectToClipPos(v.vertex);
@@ -977,49 +940,46 @@ Shader "LCumashader/Eye"
 				float4 ase_lightColor = _LightColor0;
 				#endif //aselc
 				float3 temp_cast_0 = (_MinDirectLight).xxx;
-				float3 clampResult1960 = clamp( ase_lightColor.rgb , temp_cast_0 , float3( 2,2,2 ) );
+				float3 temp_output_1971_0 = max( ase_lightColor.rgb , temp_cast_0 );
 				float3 worldPos1939 = ase_worldPos;
 				float localPureLightAttenuation1939 = PureLightAttenuation( worldPos1939 );
-				float3 temp_output_1942_0 = ( clampResult1960 * (( _ShadowinLightColor )?( ase_atten ):( localPureLightAttenuation1939 )) );
+				float3 temp_output_1942_0 = ( temp_output_1971_0 * (( _ShadowinLightColor )?( ase_atten ):( localPureLightAttenuation1939 )) );
+				float3 temp_cast_1 = (_MinDirectLight).xxx;
+				float3 temp_cast_2 = (_MinDirectLight).xxx;
 				#ifdef UNITY_PASS_FORWARDADD
 				float3 staticSwitch1941 = temp_output_1942_0;
 				#else
-				float3 staticSwitch1941 = clampResult1960;
+				float3 staticSwitch1941 = temp_output_1971_0;
 				#endif
-				float3 temp_cast_1 = (_MaxDirectLight).xxx;
-				float3 clampResult1704 = clamp( (( _NoShadowinDirectionalLightColor )?( staticSwitch1941 ):( temp_output_1942_0 )) , float3( 0,0,0 ) , temp_cast_1 );
-				UnityGIInput data304;
-				UNITY_INITIALIZE_OUTPUT( UnityGIInput, data304 );
-				#if defined(LIGHTMAP_ON) || defined(DYNAMICLIGHTMAP_ON) //dylm304
-				data304.lightmapUV = i.ase_lmap;
-				#endif //dylm304
-				#if UNITY_SHOULD_SAMPLE_SH //fsh304
-				data304.ambient = i.ase_sh;
-				#endif //fsh304
-				UnityGI gi304 = UnityGI_Base(data304, 1, ase_worldNormal);
+				float3 temp_cast_3 = (_MaxDirectLight).xxx;
+				float4 Normal1973 = float4( 0,0,0,0 );
+				float3 localShadeSH9out1973 = ShadeSH9out( Normal1973 );
 				float3 localMaxShadeSH9876 = MaxShadeSH9();
-				float3 temp_cast_2 = (_MinIndirectLight).xxx;
-				float3 temp_cast_3 = (_MaxIndirectLight).xxx;
-				float3 clampResult1705 = clamp( (( _UnifyIndirectDiffuseLight )?( localMaxShadeSH9876 ):( gi304.indirect.diffuse )) , temp_cast_2 , temp_cast_3 );
-				float3 temp_output_1706_0 = max( clampResult1704 , clampResult1705 );
+				float3 temp_cast_4 = (_MinIndirectLight).xxx;
+				float3 temp_cast_5 = (_MaxIndirectLight).xxx;
+				float3 temp_output_1706_0 = max( min( (( _NoShadowinDirectionalLightColor )?( staticSwitch1941 ):( temp_output_1942_0 )) , temp_cast_3 ) , min( max( (( _UnifyIndirectDiffuseLight )?( localMaxShadeSH9876 ):( localShadeSH9out1973 )) , temp_cast_4 ) , temp_cast_5 ) );
+				float3 temp_cast_6 = (_MinDirectLight).xxx;
+				float3 temp_cast_7 = (_MaxDirectLight).xxx;
+				float3 temp_cast_8 = (_MinIndirectLight).xxx;
+				float3 temp_cast_9 = (_MaxIndirectLight).xxx;
 				float grayscale1945 = dot(temp_output_1706_0, float3(0.299,0.587,0.114));
-				float3 temp_cast_4 = (grayscale1945).xxx;
-				float3 lerpResult1944 = lerp( temp_output_1706_0 , temp_cast_4 , _LightColorGrayScale);
+				float3 temp_cast_10 = (grayscale1945).xxx;
+				float3 lerpResult1944 = lerp( temp_output_1706_0 , temp_cast_10 , _LightColorGrayScale);
 				float3 LightColor208 = lerpResult1944;
 				float EyeLightFactor1708 = _EyeLightFactor;
 				float4 lerpResult1712 = lerp( (( _EyeShadow )?( lerpResult1325 ):( temp_output_1425_0 )) , ( (( _EyeShadow )?( lerpResult1325 ):( temp_output_1425_0 )) * float4( LightColor208 , 0.0 ) ) , EyeLightFactor1708);
 				float3 appendResult1304 = (float3(_hi00Strength , _hi01Strength , _hi02Strength));
 				float2 vertexToFrag1948 = i.ase_texcoord1.zw;
 				float2 hi00UV1089 = vertexToFrag1948;
-				float4 temp_cast_6 = (_hi00Step).xxxx;
-				float2 vertexToFrag1949 = i.ase_texcoord7.xy;
+				float4 temp_cast_12 = (_hi00Step).xxxx;
+				float2 vertexToFrag1949 = i.ase_texcoord5.xy;
 				float2 hi01UV1165 = vertexToFrag1949;
-				float4 temp_cast_7 = (_hi01Step).xxxx;
-				float2 vertexToFrag1950 = i.ase_texcoord7.zw;
+				float4 temp_cast_13 = (_hi01Step).xxxx;
+				float2 vertexToFrag1950 = i.ase_texcoord5.zw;
 				float2 hi02UV1216 = vertexToFrag1950;
-				float4 temp_cast_8 = (_hi02Step).xxxx;
+				float4 temp_cast_14 = (_hi02Step).xxxx;
 				float3 weightedBlendVar1307 = appendResult1304;
-				float4 weightedBlend1307 = ( weightedBlendVar1307.x*(( _hi00Toggle )?( saturate( ( ( tex2D( _hi00, hi00UV1089 ) - temp_cast_6 ) / _hi00StepFeather ) ) ):( float4( 0,0,0,0 ) )) + weightedBlendVar1307.y*(( _hi01Toggle )?( saturate( ( ( tex2D( _hi01, hi01UV1165 ) - temp_cast_7 ) / _hi01StepFeather ) ) ):( float4( 0,0,0,0 ) )) + weightedBlendVar1307.z*(( _hi02Toggle )?( saturate( ( ( tex2D( _hi02, hi02UV1216 ) - temp_cast_8 ) / _hi02StepFeather ) ) ):( float4( 0,0,0,0 ) )) );
+				float4 weightedBlend1307 = ( weightedBlendVar1307.x*(( _hi00Toggle )?( saturate( ( ( tex2D( _hi00, hi00UV1089 ) - temp_cast_12 ) / _hi00StepFeather ) ) ):( float4( 0,0,0,0 ) )) + weightedBlendVar1307.y*(( _hi01Toggle )?( saturate( ( ( tex2D( _hi01, hi01UV1165 ) - temp_cast_13 ) / _hi01StepFeather ) ) ):( float4( 0,0,0,0 ) )) + weightedBlendVar1307.z*(( _hi02Toggle )?( saturate( ( ( tex2D( _hi02, hi02UV1216 ) - temp_cast_14 ) / _hi02StepFeather ) ) ):( float4( 0,0,0,0 ) )) );
 				float4 lerpResult1378 = lerp( weightedBlend1307 , ( weightedBlend1307 * Shadow1322 ) , shad_lerp1312);
 				float HighlightLightFactor1709 = _HighlightLightFactor;
 				float4 lerpResult1713 = lerp( (( _HighLightShadow )?( lerpResult1378 ):( weightedBlend1307 )) , ( (( _HighLightShadow )?( lerpResult1378 ):( weightedBlend1307 )) * float4( LightColor208 , 0.0 ) ) , HighlightLightFactor1709);
@@ -1030,8 +990,8 @@ Shader "LCumashader/Eye"
 				float4 Emissive600 = tex2D( _EmiTex, uv_EmiTex );
 				float4 Refined_diff612 = ( lerpResult1723 + ( Emissive600 * _EmissiveColor * _EmmisiveStrength ) );
 				float dotResult614 = dot( _UnsaturationColor , Refined_diff612 );
-				float4 temp_cast_11 = (dotResult614).xxxx;
-				float4 lerpResult616 = lerp( temp_cast_11 , Refined_diff612 , _Saturation);
+				float4 temp_cast_17 = (dotResult614).xxxx;
+				float4 lerpResult616 = lerp( temp_cast_17 , Refined_diff612 , _Saturation);
 				float4 output_diff618 = lerpResult616;
 				
 				
@@ -1051,8 +1011,7 @@ Shader "LCumashader/Eye"
 			ZWrite On
 			ZTest LEqual
 			CGPROGRAM
-			#pragma multi_compile_fwdbase
-
+			
 			#pragma vertex vert
 			#pragma fragment frag
 			#pragma multi_compile_shadowcaster
@@ -1209,6 +1168,11 @@ Shader "LCumashader/Eye"
 				#endif
 			}
 			
+			float3 ShadeSH9out( half4 Normal )
+			{
+				return ShadeSH9(Normal);
+			}
+			
 			float3 MaxShadeSH9(  )
 			{
 				return max(ShadeSH9(half4(0, 0, 0, 1)).rgb, ShadeSH9(half4(0, -1, 0, 1)).rgb);
@@ -1222,8 +1186,8 @@ Shader "LCumashader/Eye"
 				float3 normal : NORMAL;
 				UNITY_VERTEX_INPUT_INSTANCE_ID
 				float4 ase_texcoord : TEXCOORD0;
-				float4 texcoord1 : TEXCOORD1;
-				float4 texcoord2 : TEXCOORD2;
+				float4 ase_texcoord1 : TEXCOORD1;
+				float4 ase_texcoord2 : TEXCOORD2;
 			};
 			
 			struct v2f
@@ -1235,9 +1199,7 @@ Shader "LCumashader/Eye"
 				float4 ase_texcoord2 : TEXCOORD2;
 				float4 ase_texcoord3 : TEXCOORD3;
 				UNITY_SHADOW_COORDS(4)
-				float4 ase_lmap : TEXCOORD5;
-				float4 ase_sh : TEXCOORD6;
-				float4 ase_texcoord7 : TEXCOORD7;
+				float4 ase_texcoord5 : TEXCOORD5;
 			};
 
 			
@@ -1294,27 +1256,9 @@ Shader "LCumashader/Eye"
 				o.ase_texcoord2.xyz = ase_worldPos;
 				float3 ase_worldNormal = UnityObjectToWorldNormal(v.normal);
 				o.ase_texcoord3.xyz = ase_worldNormal;
-				#ifdef DYNAMICLIGHTMAP_ON //dynlm
-				o.ase_lmap.zw = v.texcoord2.xy * unity_DynamicLightmapST.xy + unity_DynamicLightmapST.zw;
-				#endif //dynlm
-				#ifdef LIGHTMAP_ON //stalm
-				o.ase_lmap.xy = v.texcoord1.xy * unity_LightmapST.xy + unity_LightmapST.zw;
-				#endif //stalm
-				#ifndef LIGHTMAP_ON //nstalm
-				#if UNITY_SHOULD_SAMPLE_SH //sh
-				o.ase_sh.xyz = 0;
-				#ifdef VERTEXLIGHT_ON //vl
-				o.ase_sh.xyz += Shade4PointLights (
-				unity_4LightPosX0, unity_4LightPosY0, unity_4LightPosZ0,
-				unity_LightColor[0].rgb, unity_LightColor[1].rgb, unity_LightColor[2].rgb, unity_LightColor[3].rgb,
-				unity_4LightAtten0, ase_worldPos, ase_worldNormal);
-				#endif //vl
-				o.ase_sh.xyz = ShadeSHPerVertex (ase_worldNormal, o.ase_sh.xyz);
-				#endif //sh
-				#endif //nstalm
 				float2 temp_cast_0 = (0.5).xx;
 				float2 appendResult1003 = (float2(_hi00Offset.x , _hi00Offset.y));
-				float2 temp_output_1002_0 = ( ( v.texcoord1.xy - temp_cast_0 ) + appendResult1003 );
+				float2 temp_output_1002_0 = ( ( v.ase_texcoord1.xy - temp_cast_0 ) + appendResult1003 );
 				float hi00ctrl1599 = _hi00AutoWaggle;
 				float hi00Auto1604 = ( ( sin( ( asin( _SinTime.w ) * _hi00Frequency ) ) + ( sin( ( asin( _CosTime.w ) * _hi00NoiseFrequency ) ) * _hi00NoiseFactor ) ) * _hi00WaggleRange );
 				float temp_output_1230_0 = ( ( ( hi00ctrl1599 == 1.0 ? ( hi00Auto1604 + _hi00LRotation ) : _hi00LRotation ) * UNITY_PI ) / 45.0 );
@@ -1328,7 +1272,7 @@ Shader "LCumashader/Eye"
 				float2 hi00L1085 = ( float2( 0,0 ) + appendResult1021 + 0.5 );
 				float2 temp_cast_4 = (0.5).xx;
 				float2 appendResult1056 = (float2(_hi00Offset.z , _hi00Offset.w));
-				float2 temp_output_1057_0 = ( ( v.texcoord1.xy - temp_cast_4 ) + appendResult1056 );
+				float2 temp_output_1057_0 = ( ( v.ase_texcoord1.xy - temp_cast_4 ) + appendResult1056 );
 				float temp_output_1231_0 = ( ( ( hi00ctrl1599 == 1.0 ? ( hi00Auto1604 + _hi00RRotation ) : _hi00RRotation ) * UNITY_PI ) / 45.0 );
 				float hi00RSin1054 = sin( temp_output_1231_0 );
 				float2 temp_output_1058_0 = ( temp_output_1057_0 * hi00RSin1054 );
@@ -1342,7 +1286,7 @@ Shader "LCumashader/Eye"
 				o.ase_texcoord1.zw = vertexToFrag1948;
 				float2 temp_cast_8 = (0.5).xx;
 				float2 appendResult1091 = (float2(_hi01Offset.x , _hi01Offset.y));
-				float2 temp_output_1092_0 = ( ( v.texcoord1.xy - temp_cast_8 ) + appendResult1091 );
+				float2 temp_output_1092_0 = ( ( v.ase_texcoord1.xy - temp_cast_8 ) + appendResult1091 );
 				float hi01ctrl1640 = _hi01AutoWaggle;
 				float hi01Auto1638 = ( ( sin( ( asin( _SinTime.w ) * _hi01Frequency ) ) + ( sin( ( asin( _CosTime.w ) * _hi01NoiseFrequency ) ) * _hi01NoiseFactor ) ) * _hi01WaggleRange );
 				float temp_output_1147_0 = ( ( ( hi01ctrl1640 == 1.0 ? ( hi01Auto1638 + _hi01LRotation ) : _hi01LRotation ) * UNITY_PI ) / 45.0 );
@@ -1356,7 +1300,7 @@ Shader "LCumashader/Eye"
 				float2 hi01L1144 = ( float2( 0,0 ) + appendResult1105 + 0.5 );
 				float2 temp_cast_12 = (0.5).xx;
 				float2 appendResult1115 = (float2(_hi01Offset.z , _hi01Offset.w));
-				float2 temp_output_1116_0 = ( ( v.texcoord1.xy - temp_cast_12 ) + appendResult1115 );
+				float2 temp_output_1116_0 = ( ( v.ase_texcoord1.xy - temp_cast_12 ) + appendResult1115 );
 				float temp_output_1152_0 = ( ( ( hi01ctrl1640 == 1.0 ? ( hi01Auto1638 + _hi01RRotation ) : _hi01RRotation ) * UNITY_PI ) / 45.0 );
 				float hi01RSin1159 = sin( temp_output_1152_0 );
 				float2 temp_output_1117_0 = ( temp_output_1116_0 * hi01RSin1159 );
@@ -1367,10 +1311,10 @@ Shader "LCumashader/Eye"
 				float2 appendResult1129 = (float2(( (temp_output_1117_0).y + ( (temp_output_1116_0).x * hi01RCos1160 ) ) , ( ( hi01RCos1160 * (temp_output_1116_0).y ) - (temp_output_1117_0).x )));
 				float2 hi01R1143 = ( float2( 0,0 ) + appendResult1129 + 0.5 );
 				float2 vertexToFrag1949 = ( v.ase_texcoord.y >= 0.5 ? hi01L1144 : hi01R1143 );
-				o.ase_texcoord7.xy = vertexToFrag1949;
+				o.ase_texcoord5.xy = vertexToFrag1949;
 				float2 temp_cast_16 = (0.5).xx;
 				float2 appendResult1170 = (float2(_hi02Offset.x , _hi02Offset.y));
-				float2 temp_output_1171_0 = ( ( v.texcoord2.xy - temp_cast_16 ) + appendResult1170 );
+				float2 temp_output_1171_0 = ( ( v.ase_texcoord2.xy - temp_cast_16 ) + appendResult1170 );
 				float hi02ctrl1668 = _hi02AutoWaggle;
 				float hi02Auto1667 = ( ( sin( ( asin( _SinTime.w ) * _hi02Frequency ) ) + ( sin( ( asin( _CosTime.w ) * _hi02NoiseFrequency ) ) * _hi02NoiseFactor ) ) * _hi02WaggleRange );
 				float temp_output_1195_0 = ( ( ( hi02ctrl1668 == 1.0 ? ( hi02Auto1667 + _hi02Rotation ) : _hi02Rotation ) * UNITY_PI ) / 45.0 );
@@ -1382,14 +1326,13 @@ Shader "LCumashader/Eye"
 				float2 temp_cast_19 = (0.5).xx;
 				float2 appendResult1183 = (float2(( (temp_output_1172_0).y + ( (temp_output_1171_0).x * hi02Cos1210 ) ) , ( ( hi02Cos1210 * (temp_output_1171_0).y ) - (temp_output_1172_0).x )));
 				float2 vertexToFrag1950 = ( float2( 0,0 ) + appendResult1183 + 0.5 );
-				o.ase_texcoord7.zw = vertexToFrag1950;
+				o.ase_texcoord5.zw = vertexToFrag1950;
 				
 				o.ase_texcoord1.xy = v.ase_texcoord.xy;
 				
 				//setting value to unused interpolator channels and avoid initialization warnings
 				o.ase_texcoord2.w = 0;
 				o.ase_texcoord3.w = 0;
-				o.ase_sh.w = 0;
 				
 				v.vertex.xyz += ( v.ase_texcoord.y >= 0.5 ? ( _UseCustomTransform == 1.0 ? mul( (( _FakeEyeTrackingL )?( ( _VertexOffsetL + appendResult1836 ) ):( _VertexOffsetL )), CustomMatrixL1802 ) : (( _FakeEyeTrackingL )?( ( _VertexOffsetL + appendResult1836 ) ):( _VertexOffsetL )) ) : ( _UseCustomTransform == 1.0 ? mul( (( _FakeEyeTrackingR )?( ( _VertexOffsetR + appendResult1898 ) ):( _VertexOffsetR )), CustomMatrixR1801 ) : (( _FakeEyeTrackingR )?( ( _VertexOffsetR + appendResult1898 ) ):( _VertexOffsetR )) ) );
 				TRANSFER_SHADOW_CASTER_NORMALOFFSET(o)
@@ -1421,49 +1364,46 @@ Shader "LCumashader/Eye"
 				float4 ase_lightColor = _LightColor0;
 				#endif //aselc
 				float3 temp_cast_0 = (_MinDirectLight).xxx;
-				float3 clampResult1960 = clamp( ase_lightColor.rgb , temp_cast_0 , float3( 2,2,2 ) );
+				float3 temp_output_1971_0 = max( ase_lightColor.rgb , temp_cast_0 );
 				float3 worldPos1939 = ase_worldPos;
 				float localPureLightAttenuation1939 = PureLightAttenuation( worldPos1939 );
-				float3 temp_output_1942_0 = ( clampResult1960 * (( _ShadowinLightColor )?( ase_atten ):( localPureLightAttenuation1939 )) );
+				float3 temp_output_1942_0 = ( temp_output_1971_0 * (( _ShadowinLightColor )?( ase_atten ):( localPureLightAttenuation1939 )) );
+				float3 temp_cast_1 = (_MinDirectLight).xxx;
+				float3 temp_cast_2 = (_MinDirectLight).xxx;
 				#ifdef UNITY_PASS_FORWARDADD
 				float3 staticSwitch1941 = temp_output_1942_0;
 				#else
-				float3 staticSwitch1941 = clampResult1960;
+				float3 staticSwitch1941 = temp_output_1971_0;
 				#endif
-				float3 temp_cast_1 = (_MaxDirectLight).xxx;
-				float3 clampResult1704 = clamp( (( _NoShadowinDirectionalLightColor )?( staticSwitch1941 ):( temp_output_1942_0 )) , float3( 0,0,0 ) , temp_cast_1 );
-				UnityGIInput data304;
-				UNITY_INITIALIZE_OUTPUT( UnityGIInput, data304 );
-				#if defined(LIGHTMAP_ON) || defined(DYNAMICLIGHTMAP_ON) //dylm304
-				data304.lightmapUV = i.ase_lmap;
-				#endif //dylm304
-				#if UNITY_SHOULD_SAMPLE_SH //fsh304
-				data304.ambient = i.ase_sh;
-				#endif //fsh304
-				UnityGI gi304 = UnityGI_Base(data304, 1, ase_worldNormal);
+				float3 temp_cast_3 = (_MaxDirectLight).xxx;
+				float4 Normal1973 = float4( 0,0,0,0 );
+				float3 localShadeSH9out1973 = ShadeSH9out( Normal1973 );
 				float3 localMaxShadeSH9876 = MaxShadeSH9();
-				float3 temp_cast_2 = (_MinIndirectLight).xxx;
-				float3 temp_cast_3 = (_MaxIndirectLight).xxx;
-				float3 clampResult1705 = clamp( (( _UnifyIndirectDiffuseLight )?( localMaxShadeSH9876 ):( gi304.indirect.diffuse )) , temp_cast_2 , temp_cast_3 );
-				float3 temp_output_1706_0 = max( clampResult1704 , clampResult1705 );
+				float3 temp_cast_4 = (_MinIndirectLight).xxx;
+				float3 temp_cast_5 = (_MaxIndirectLight).xxx;
+				float3 temp_output_1706_0 = max( min( (( _NoShadowinDirectionalLightColor )?( staticSwitch1941 ):( temp_output_1942_0 )) , temp_cast_3 ) , min( max( (( _UnifyIndirectDiffuseLight )?( localMaxShadeSH9876 ):( localShadeSH9out1973 )) , temp_cast_4 ) , temp_cast_5 ) );
+				float3 temp_cast_6 = (_MinDirectLight).xxx;
+				float3 temp_cast_7 = (_MaxDirectLight).xxx;
+				float3 temp_cast_8 = (_MinIndirectLight).xxx;
+				float3 temp_cast_9 = (_MaxIndirectLight).xxx;
 				float grayscale1945 = dot(temp_output_1706_0, float3(0.299,0.587,0.114));
-				float3 temp_cast_4 = (grayscale1945).xxx;
-				float3 lerpResult1944 = lerp( temp_output_1706_0 , temp_cast_4 , _LightColorGrayScale);
+				float3 temp_cast_10 = (grayscale1945).xxx;
+				float3 lerpResult1944 = lerp( temp_output_1706_0 , temp_cast_10 , _LightColorGrayScale);
 				float3 LightColor208 = lerpResult1944;
 				float EyeLightFactor1708 = _EyeLightFactor;
 				float4 lerpResult1712 = lerp( (( _EyeShadow )?( lerpResult1325 ):( temp_output_1425_0 )) , ( (( _EyeShadow )?( lerpResult1325 ):( temp_output_1425_0 )) * float4( LightColor208 , 0.0 ) ) , EyeLightFactor1708);
 				float3 appendResult1304 = (float3(_hi00Strength , _hi01Strength , _hi02Strength));
 				float2 vertexToFrag1948 = i.ase_texcoord1.zw;
 				float2 hi00UV1089 = vertexToFrag1948;
-				float4 temp_cast_6 = (_hi00Step).xxxx;
-				float2 vertexToFrag1949 = i.ase_texcoord7.xy;
+				float4 temp_cast_12 = (_hi00Step).xxxx;
+				float2 vertexToFrag1949 = i.ase_texcoord5.xy;
 				float2 hi01UV1165 = vertexToFrag1949;
-				float4 temp_cast_7 = (_hi01Step).xxxx;
-				float2 vertexToFrag1950 = i.ase_texcoord7.zw;
+				float4 temp_cast_13 = (_hi01Step).xxxx;
+				float2 vertexToFrag1950 = i.ase_texcoord5.zw;
 				float2 hi02UV1216 = vertexToFrag1950;
-				float4 temp_cast_8 = (_hi02Step).xxxx;
+				float4 temp_cast_14 = (_hi02Step).xxxx;
 				float3 weightedBlendVar1307 = appendResult1304;
-				float4 weightedBlend1307 = ( weightedBlendVar1307.x*(( _hi00Toggle )?( saturate( ( ( tex2D( _hi00, hi00UV1089 ) - temp_cast_6 ) / _hi00StepFeather ) ) ):( float4( 0,0,0,0 ) )) + weightedBlendVar1307.y*(( _hi01Toggle )?( saturate( ( ( tex2D( _hi01, hi01UV1165 ) - temp_cast_7 ) / _hi01StepFeather ) ) ):( float4( 0,0,0,0 ) )) + weightedBlendVar1307.z*(( _hi02Toggle )?( saturate( ( ( tex2D( _hi02, hi02UV1216 ) - temp_cast_8 ) / _hi02StepFeather ) ) ):( float4( 0,0,0,0 ) )) );
+				float4 weightedBlend1307 = ( weightedBlendVar1307.x*(( _hi00Toggle )?( saturate( ( ( tex2D( _hi00, hi00UV1089 ) - temp_cast_12 ) / _hi00StepFeather ) ) ):( float4( 0,0,0,0 ) )) + weightedBlendVar1307.y*(( _hi01Toggle )?( saturate( ( ( tex2D( _hi01, hi01UV1165 ) - temp_cast_13 ) / _hi01StepFeather ) ) ):( float4( 0,0,0,0 ) )) + weightedBlendVar1307.z*(( _hi02Toggle )?( saturate( ( ( tex2D( _hi02, hi02UV1216 ) - temp_cast_14 ) / _hi02StepFeather ) ) ):( float4( 0,0,0,0 ) )) );
 				float4 lerpResult1378 = lerp( weightedBlend1307 , ( weightedBlend1307 * Shadow1322 ) , shad_lerp1312);
 				float HighlightLightFactor1709 = _HighlightLightFactor;
 				float4 lerpResult1713 = lerp( (( _HighLightShadow )?( lerpResult1378 ):( weightedBlend1307 )) , ( (( _HighLightShadow )?( lerpResult1378 ):( weightedBlend1307 )) * float4( LightColor208 , 0.0 ) ) , HighlightLightFactor1709);
@@ -1474,8 +1414,8 @@ Shader "LCumashader/Eye"
 				float4 Emissive600 = tex2D( _EmiTex, uv_EmiTex );
 				float4 Refined_diff612 = ( lerpResult1723 + ( Emissive600 * _EmissiveColor * _EmmisiveStrength ) );
 				float dotResult614 = dot( _UnsaturationColor , Refined_diff612 );
-				float4 temp_cast_11 = (dotResult614).xxxx;
-				float4 lerpResult616 = lerp( temp_cast_11 , Refined_diff612 , _Saturation);
+				float4 temp_cast_17 = (dotResult614).xxxx;
+				float4 lerpResult616 = lerp( temp_cast_17 , Refined_diff612 , _Saturation);
 				float4 output_diff618 = lerpResult616;
 				
 				
@@ -1492,9 +1432,9 @@ Shader "LCumashader/Eye"
 	Fallback Off
 }
 /*ASEBEGIN
-Version=19107
+Version=19200
 Node;AmplifyShaderEditor.CommentaryNode;1970;-4401.998,2799.662;Inherit;False;1839.151;763.2612;;25;1726;1727;1728;1729;1731;1732;1734;1737;1735;1730;1736;1968;1969;1733;1739;1740;1742;1966;1967;1738;1741;1743;1963;1965;1964;HeadBoneTransform;1,1,1,1;0;0
-Node;AmplifyShaderEditor.CommentaryNode;1956;-5387.377,627.3367;Inherit;False;2116.237;1227.786;;44;1706;773;825;1940;1704;1936;1937;1938;1939;1942;826;304;875;303;876;301;1705;1941;1944;1945;1946;208;780;779;776;778;1929;800;797;781;1951;1952;1953;1954;1955;1710;1709;1708;1707;1720;1719;1960;1961;1962;Light;1,1,1,1;0;0
+Node;AmplifyShaderEditor.CommentaryNode;1956;-5387.377,627.3367;Inherit;False;2116.237;1227.786;;45;1706;773;825;1940;1936;1937;1938;1939;1942;826;875;303;876;301;1941;1944;1945;1946;208;780;779;776;778;1929;800;797;781;1951;1952;1953;1954;1955;1710;1709;1708;1707;1720;1719;1961;1962;1971;1972;1973;1974;1975;Light;1,1,1,1;0;0
 Node;AmplifyShaderEditor.CommentaryNode;1928;-4191.22,4622.324;Inherit;False;1688.098;1002.819;;35;1787;1788;1802;1809;1780;1781;1782;1923;1924;1805;1783;1785;1784;1786;1789;1790;1925;1804;1791;1792;1793;1797;1798;1801;1926;1927;1794;1795;1803;1807;1808;1806;1796;1799;1800;Custom Transform;1,1,1,1;0;0
 Node;AmplifyShaderEditor.CommentaryNode;1696;-3235.56,1599.333;Inherit;False;2589.269;1182.234;;41;1307;1304;1378;1376;1377;1379;1382;1234;1285;1286;1370;1389;1342;1683;1679;1678;1681;1682;913;1222;65;1343;1686;1687;1688;1689;1690;1344;1691;1692;1693;1253;1254;1252;66;1223;914;1694;1695;1713;1714;HighLight Blend;1,1,1,1;0;0
 Node;AmplifyShaderEditor.CommentaryNode;1674;-260.1498,-2455.781;Inherit;False;1181.141;1682.644;;53;1616;1617;1620;1614;1595;1592;1593;1619;1618;1621;1622;1603;1596;1599;1598;1624;1625;1626;1627;1630;1631;1632;1633;1634;1637;1639;1629;1628;1635;1636;1641;1638;1640;1651;1652;1653;1654;1655;1656;1657;1658;1659;1660;1661;1662;1663;1664;1665;1666;1667;1668;1594;1604;Waggle Control;1,1,1,1;0;0
@@ -1728,7 +1668,7 @@ Node;AmplifyShaderEditor.ColorNode;611;-517.2138,1839.521;Inherit;False;Property
 Node;AmplifyShaderEditor.ColorNode;615;-523.7452,2153.081;Inherit;False;Property;_UnsaturationColor;UnsaturationColor;53;1;[HDR];Create;True;0;0;0;False;0;False;0.2117647,0.7137255,0.07058824,0;0.2117647,0.7137255,0.07058824,0;True;0;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 Node;AmplifyShaderEditor.CommentaryNode;1717;119.2916,657.576;Inherit;False;225;166;;1;1718;Cull;1,1,1,1;0;0
 Node;AmplifyShaderEditor.RangedFloatNode;1718;169.2916,707.576;Inherit;False;Property;_CullMode;Cull Mode;88;1;[Enum];Create;True;0;0;1;UnityEngine.Rendering.CullMode;True;0;False;2;0;0;0;0;1;FLOAT;0
-Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;1700;454.0132,2350.484;Float;False;False;-1;2;ASEMaterialInspector;100;12;New Amplify Shader;fe4af87006695164d84819765fe282b7;True;ForwardAdd;0;2;ForwardAdd;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;2;False;;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;2;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;2;False;0;True;True;4;1;False;;1;False;;1;0;False;;1;False;;True;5;False;;5;False;;False;False;False;False;False;False;False;False;False;True;0;False;;True;True;0;True;_CullMode;False;True;True;True;True;True;0;False;;False;False;False;False;False;False;True;True;True;0;True;_StencilReference;255;True;_StencilReadMask;255;True;_StencilWriteMask;0;True;_StencilComparison;0;True;_StencilPassFront;0;True;_StencilFailFront;0;True;_StencilZFailFront;0;False;;0;False;;0;False;;0;False;;False;True;2;False;;False;False;True;1;LightMode=ForwardAdd;True;2;False;0;;0;0;Standard;0;False;0
+Node;AmplifyShaderEditor.TemplateMultiPassMasterNode;1700;454.0132,2352.484;Float;False;False;-1;2;ASEMaterialInspector;100;12;New Amplify Shader;fe4af87006695164d84819765fe282b7;True;ForwardAdd;0;2;ForwardAdd;0;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;2;False;;False;False;False;False;False;False;False;False;False;False;False;False;False;False;True;2;RenderType=Opaque=RenderType;Queue=Geometry=Queue=0;True;2;False;0;True;True;4;1;False;;1;False;;1;0;False;;1;False;;True;5;False;;5;False;;False;False;False;False;False;False;False;False;False;True;0;False;;True;True;0;True;_CullMode;False;True;True;True;True;True;0;False;;False;False;False;False;False;False;True;True;True;0;True;_StencilReference;255;True;_StencilReadMask;255;True;_StencilWriteMask;0;True;_StencilComparison;0;True;_StencilPassFront;0;True;_StencilFailFront;0;True;_StencilZFailFront;0;False;;0;False;;0;False;;0;False;;False;True;2;False;;False;False;True;1;LightMode=ForwardAdd;True;2;False;0;;0;0;Standard;0;False;0
 Node;AmplifyShaderEditor.SimpleAddOpNode;606;21.08198,1677.067;Inherit;False;2;2;0;COLOR;0,0,0,0;False;1;COLOR;0,0,0,0;False;1;COLOR;0
 Node;AmplifyShaderEditor.RegisterLocalVarNode;612;159.1932,1675.52;Inherit;False;Refined_diff;-1;True;1;0;COLOR;0,0,0,0;False;1;COLOR;0
 Node;AmplifyShaderEditor.ColorNode;602;-564.319,1389.368;Inherit;False;Property;_CharaColor;CharaColor;51;1;[HDR];Create;True;0;0;0;False;0;False;1,1,1,1;1,1,1,1;True;0;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
@@ -2009,12 +1949,6 @@ Node;AmplifyShaderEditor.RegisterLocalVarNode;1054;-1362.397,-2345.972;Inherit;F
 Node;AmplifyShaderEditor.RegisterLocalVarNode;1086;-1084.288,-1435.446;Inherit;False;hi00R;-1;True;1;0;FLOAT2;0,0;False;1;FLOAT2;0
 Node;AmplifyShaderEditor.GetLocalVarNode;1066;-2095.172,-1320.366;Inherit;False;1054;hi00RSin;1;0;OBJECT;;False;1;FLOAT;0
 Node;AmplifyShaderEditor.GetLocalVarNode;1607;-2187.925,-2360.944;Inherit;False;1604;hi00Auto;1;0;OBJECT;;False;1;FLOAT;0
-Node;AmplifyShaderEditor.RangedFloatNode;301;-4417.26,1754.064;Inherit;False;Property;_MaxIndirectLight;MaxIndirectLight;58;0;Create;True;0;0;0;False;0;False;1;1;0;2;0;1;FLOAT;0
-Node;AmplifyShaderEditor.ClampOpNode;1705;-4149.32,1565.743;Inherit;False;3;0;FLOAT3;0,0,0;False;1;FLOAT3;0,0,0;False;2;FLOAT3;1,0,0;False;1;FLOAT3;0
-Node;AmplifyShaderEditor.RangedFloatNode;303;-4451.385,1664.906;Inherit;False;Property;_MinIndirectLight;MinIndirectLight;57;0;Create;True;0;0;0;False;0;False;0.1;0.3;0;1;0;1;FLOAT;0
-Node;AmplifyShaderEditor.IndirectDiffuseLighting;304;-4675.348,1530.999;Inherit;False;Tangent;1;0;FLOAT3;0,0,1;False;1;FLOAT3;0
-Node;AmplifyShaderEditor.ToggleSwitchNode;875;-4453.867,1557.484;Inherit;False;Property;_UnifyIndirectDiffuseLight;Unify IndirectDiffuseLight;56;0;Create;True;0;0;0;False;0;False;1;True;2;0;FLOAT3;0,0,0;False;1;FLOAT3;0,0,0;False;1;FLOAT3;0
-Node;AmplifyShaderEditor.CustomExpressionNode;876;-4619.387,1613.485;Inherit;False;return max(ShadeSH9(half4(0, 0, 0, 1)).rgb, ShadeSH9(half4(0, -1, 0, 1)).rgb)@;3;Create;0;MaxShadeSH9;False;False;0;;False;0;1;FLOAT3;0
 Node;AmplifyShaderEditor.SimpleMaxOpNode;1706;-3966.708,1365.349;Inherit;False;2;0;FLOAT3;0,0,0;False;1;FLOAT3;0,0,0;False;1;FLOAT3;0
 Node;AmplifyShaderEditor.ToggleSwitchNode;1940;-4393.598,1173.338;Inherit;False;Property;_NoShadowinDirectionalLightColor;NoShadow in DirectionalLightColor;9;0;Create;True;0;0;0;False;0;False;0;True;2;0;FLOAT3;0,0,0;False;1;FLOAT3;0,0,0;False;1;FLOAT3;0
 Node;AmplifyShaderEditor.SimpleMultiplyOpNode;1942;-4674.568,1347.116;Inherit;False;2;2;0;FLOAT3;0,0,0;False;1;FLOAT;0;False;1;FLOAT3;0
@@ -2024,8 +1958,6 @@ Node;AmplifyShaderEditor.LerpOp;1944;-3644.654,1367.456;Inherit;False;3;0;FLOAT3
 Node;AmplifyShaderEditor.TFHCGrayscale;1945;-3845.748,1431.222;Inherit;False;1;1;0;FLOAT3;0,0,0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.RangedFloatNode;1946;-3904.494,1510.273;Inherit;False;Property;_LightColorGrayScale;LightColor GrayScale;59;0;Create;True;0;0;0;False;0;False;0;0;0;1;0;1;FLOAT;0
 Node;AmplifyShaderEditor.RegisterLocalVarNode;208;-3495.141,1365.047;Inherit;False;LightColor;-1;True;1;0;FLOAT3;0,0,0;False;1;FLOAT3;0
-Node;AmplifyShaderEditor.ClampOpNode;1704;-4092.323,1181.188;Inherit;False;3;0;FLOAT3;0,0,0;False;1;FLOAT3;0,0,0;False;2;FLOAT3;1,0,0;False;1;FLOAT3;0
-Node;AmplifyShaderEditor.ClampOpNode;1960;-4851.848,1209.587;Inherit;False;3;0;FLOAT3;0,0,0;False;1;FLOAT3;0,0,0;False;2;FLOAT3;2,2,2;False;1;FLOAT3;0
 Node;AmplifyShaderEditor.RangedFloatNode;825;-5169.267,1277.485;Inherit;False;Property;_MinDirectLight;MinDirectLight;54;1;[Header];Create;True;1;Light;0;0;False;0;False;0;0.2;0;1;0;1;FLOAT;0
 Node;AmplifyShaderEditor.LightColorNode;773;-5027.083,1155.293;Inherit;False;0;3;COLOR;0;FLOAT3;1;FLOAT;2
 Node;AmplifyShaderEditor.WorldPosInputsNode;1936;-5283.784,1409.343;Inherit;False;0;4;FLOAT3;0;FLOAT;1;FLOAT;2;FLOAT;3
@@ -2078,6 +2010,15 @@ Node;AmplifyShaderEditor.RegisterLocalVarNode;1743;-3785.811,2945.555;Inherit;Fa
 Node;AmplifyShaderEditor.RangedFloatNode;1963;-4170.731,2907.761;Inherit;False;Property;_ObjectSpace;ObjectSpace;77;2;[Header];[Toggle];Create;True;1;HeadBoneTransform;0;0;False;0;False;1;0;0;0;0;1;FLOAT;0
 Node;AmplifyShaderEditor.RegisterLocalVarNode;1965;-3984.632,2849.662;Inherit;False;isObjectSpace;-1;True;1;0;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.Compare;1964;-3943.332,2941.86;Inherit;False;0;4;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT3;0,0,0;False;3;FLOAT3;0,0,0;False;1;FLOAT3;0
+Node;AmplifyShaderEditor.RangedFloatNode;301;-4591.66,1755.664;Inherit;False;Property;_MaxIndirectLight;MaxIndirectLight;58;0;Create;True;0;0;0;False;0;False;1;1;0;2;0;1;FLOAT;0
+Node;AmplifyShaderEditor.RangedFloatNode;303;-4625.785,1666.506;Inherit;False;Property;_MinIndirectLight;MinIndirectLight;57;0;Create;True;0;0;0;False;0;False;0.1;0.3;0;1;0;1;FLOAT;0
+Node;AmplifyShaderEditor.ToggleSwitchNode;875;-4628.268,1559.084;Inherit;False;Property;_UnifyIndirectDiffuseLight;Unify IndirectDiffuseLight;56;0;Create;True;0;0;0;False;0;False;1;True;2;0;FLOAT3;0,0,0;False;1;FLOAT3;0,0,0;False;1;FLOAT3;0
+Node;AmplifyShaderEditor.CustomExpressionNode;876;-4793.788,1615.085;Inherit;False;return max(ShadeSH9(half4(0, 0, 0, 1)).rgb, ShadeSH9(half4(0, -1, 0, 1)).rgb)@;3;Create;0;MaxShadeSH9;False;False;0;;False;0;1;FLOAT3;0
+Node;AmplifyShaderEditor.CustomExpressionNode;1973;-4822.873,1526.059;Inherit;False;return ShadeSH9(Normal)@;3;Create;1;True;Normal;FLOAT4;0,0,0,0;In;;Half;False;ShadeSH9out;False;False;0;;False;1;0;FLOAT4;0,0,0,0;False;1;FLOAT3;0
+Node;AmplifyShaderEditor.SimpleMaxOpNode;1971;-4841.854,1209.794;Inherit;False;2;0;FLOAT3;0,0,0;False;1;FLOAT;0;False;1;FLOAT3;0
+Node;AmplifyShaderEditor.SimpleMaxOpNode;1974;-4321.801,1565.959;Inherit;False;2;0;FLOAT3;0,0,0;False;1;FLOAT;0;False;1;FLOAT3;0
+Node;AmplifyShaderEditor.SimpleMinOpNode;1972;-4077.224,1216.305;Inherit;False;2;0;FLOAT3;0,0,0;False;1;FLOAT;0;False;1;FLOAT3;0
+Node;AmplifyShaderEditor.SimpleMinOpNode;1975;-4199.603,1607.56;Inherit;False;2;0;FLOAT3;0,0,0;False;1;FLOAT;0;False;1;FLOAT3;0
 WireConnection;600;0;68;0
 WireConnection;888;0;907;0
 WireConnection;889;0;908;0
@@ -2611,28 +2552,19 @@ WireConnection;1089;0;1948;0
 WireConnection;1053;0;1051;0
 WireConnection;1054;0;1052;0
 WireConnection;1086;0;1074;0
-WireConnection;1705;0;875;0
-WireConnection;1705;1;303;0
-WireConnection;1705;2;301;0
-WireConnection;875;0;304;0
-WireConnection;875;1;876;0
-WireConnection;1706;0;1704;0
-WireConnection;1706;1;1705;0
+WireConnection;1706;0;1972;0
+WireConnection;1706;1;1975;0
 WireConnection;1940;0;1942;0
 WireConnection;1940;1;1941;0
-WireConnection;1942;0;1960;0
+WireConnection;1942;0;1971;0
 WireConnection;1942;1;1938;0
-WireConnection;1941;1;1960;0
+WireConnection;1941;1;1971;0
 WireConnection;1941;0;1942;0
 WireConnection;1944;0;1706;0
 WireConnection;1944;1;1945;0
 WireConnection;1944;2;1946;0
 WireConnection;1945;0;1706;0
 WireConnection;208;0;1944;0
-WireConnection;1704;0;1940;0
-WireConnection;1704;2;826;0
-WireConnection;1960;0;773;1
-WireConnection;1960;1;825;0
 WireConnection;1938;0;1939;0
 WireConnection;1938;1;1937;0
 WireConnection;1939;0;1936;0
@@ -2678,5 +2610,15 @@ WireConnection;1965;0;1963;0
 WireConnection;1964;0;1963;0
 WireConnection;1964;2;1738;0
 WireConnection;1964;3;1741;0
+WireConnection;875;0;1973;0
+WireConnection;875;1;876;0
+WireConnection;1971;0;773;1
+WireConnection;1971;1;825;0
+WireConnection;1974;0;875;0
+WireConnection;1974;1;303;0
+WireConnection;1972;0;1940;0
+WireConnection;1972;1;826;0
+WireConnection;1975;0;1974;0
+WireConnection;1975;1;301;0
 ASEEND*/
-//CHKSM=987C536AC62A67ED55D8A558FF0CE5513EAA70B9
+//CHKSM=F3D2FD02E82AD575D16CFBE82A104BA7C97121D6
