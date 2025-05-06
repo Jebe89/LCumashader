@@ -88,7 +88,7 @@ Shader "LCumashader/Zekken"
 		_MaxDirectLight("MaxDirectLight", Range( 0 , 2)) = 1
 		_IndirectLightBiasSample1("Indirect Light Bias Sample1", Vector) = (0,0,0,1)
 		_IndirectLightBiasSample2("Indirect Light Bias Sample2", Vector) = (0,1,0,1)
-		_IndirectBiasSampleRate("Indirect Bias Sample Rate", Range( 0 , 1)) = 0.7
+		_IndirectBiasSampleRate("Indirect Bias Sample Rate", Range( 0 , 1)) = 1
 		_MinIndirectLight("MinIndirectLight", Range( 0 , 1)) = 0.1
 		_MaxIndirectLight("MaxIndirectLight", Range( 0 , 2)) = 1
 		_LightColorGrayScale("LightColor GrayScale", Range( 0 , 1)) = 0
@@ -2459,7 +2459,7 @@ Node;AmplifyShaderEditor.CustomExpressionNode;797;-5523.371,1655.865;Inherit;Fal
 Node;AmplifyShaderEditor.CustomExpressionNode;798;-5519.564,1781.481;Inherit;False;return normalize(UNITY_MATRIX_V[2].xyz + UNITY_MATRIX_V[1].xyz)@;3;Create;0;Default LightDir;False;False;0;;False;0;1;FLOAT3;0
 Node;AmplifyShaderEditor.RangedFloatNode;303;-3580.376,2282.975;Inherit;False;Property;_MinIndirectLight;MinIndirectLight;85;0;Create;True;0;0;0;False;0;False;0.1;0.3;0;1;0;1;FLOAT;0
 Node;AmplifyShaderEditor.RangedFloatNode;301;-3581.55,2364.996;Inherit;False;Property;_MaxIndirectLight;MaxIndirectLight;86;0;Create;True;0;0;0;False;0;False;1;1;0;2;0;1;FLOAT;0
-Node;AmplifyShaderEditor.RangedFloatNode;1187;-3865.324,2370.872;Inherit;False;Property;_IndirectBiasSampleRate;Indirect Bias Sample Rate;84;0;Create;True;0;0;0;False;0;False;0.7;0.3;0;1;0;1;FLOAT;0
+Node;AmplifyShaderEditor.RangedFloatNode;1187;-3865.324,2370.872;Inherit;False;Property;_IndirectBiasSampleRate;Indirect Bias Sample Rate;84;0;Create;True;0;0;0;False;0;False;1;0.3;0;1;0;1;FLOAT;0
 Node;AmplifyShaderEditor.CustomExpressionNode;1188;-3825.261,1988.224;Inherit;False;return ShadeSH9(Normal)@;3;Create;1;True;Normal;FLOAT4;0,0,0,0;In;;Half;False;ShadeSH9out;False;False;0;;False;1;0;FLOAT4;0,0,0,0;False;1;FLOAT3;0
 Node;AmplifyShaderEditor.GetLocalVarNode;1191;-4194.149,1987.913;Inherit;False;1173;WorldNormal;1;0;OBJECT;;False;1;FLOAT3;0
 Node;AmplifyShaderEditor.DynamicAppendNode;1190;-3996.855,1990.912;Inherit;False;FLOAT4;4;0;FLOAT3;0,0,0;False;1;FLOAT;0;False;2;FLOAT;0;False;3;FLOAT;1;False;1;FLOAT4;0
@@ -2976,4 +2976,4 @@ WireConnection;1196;3;1192;4
 WireConnection;1197;0;1186;0
 WireConnection;1197;1;1195;0
 ASEEND*/
-//CHKSM=2A002C64FD482FD8190F6FAB7C556D0CEFA0EB19
+//CHKSM=503A5D0C776F254D0E002CEEA63F0289E94D221D

@@ -24,7 +24,7 @@ Shader "LCumashader/Tear"
 		_MaxDirectLight("MaxDirectLight", Range( 0 , 2)) = 1
 		_IndirectLightBiasSample1("Indirect Light Bias Sample1", Vector) = (0,0,0,1)
 		_IndirectLightBiasSample2("Indirect Light Bias Sample2", Vector) = (0,1,0,1)
-		_IndirectBiasSampleRate("Indirect Bias Sample Rate", Range( 0 , 1)) = 0.7
+		_IndirectBiasSampleRate("Indirect Bias Sample Rate", Range( 0 , 1)) = 1
 		_MinIndirectLight("MinIndirectLight", Range( 0 , 1)) = 0.1
 		_MaxIndirectLight("MaxIndirectLight", Range( 0 , 2)) = 1
 		_LightFactor("LightFactor", Range( 0 , 1)) = 0.5
@@ -829,7 +829,7 @@ Node;AmplifyShaderEditor.NormalizeNode;1144;-2084.161,1793.322;Inherit;False;Tru
 Node;AmplifyShaderEditor.DynamicAppendNode;1145;-1929.513,1806.179;Inherit;False;FLOAT4;4;0;FLOAT3;0,0,0;False;1;FLOAT;0;False;2;FLOAT;0;False;3;FLOAT;0;False;1;FLOAT4;0
 Node;AmplifyShaderEditor.CustomExpressionNode;1146;-1785.426,1809.78;Inherit;False;return ShadeSH9(Normal)@;3;Create;1;True;Normal;FLOAT4;0,0,0,0;In;;Half;False;ShadeSH9out;False;False;0;;False;1;0;FLOAT4;0,0,0,0;False;1;FLOAT3;0
 Node;AmplifyShaderEditor.SimpleMaxOpNode;1147;-1580.494,1819.427;Inherit;False;2;0;FLOAT3;0,0,0;False;1;FLOAT3;0,0,0;False;1;FLOAT3;0
-Node;AmplifyShaderEditor.RangedFloatNode;1148;-1556.492,1913.354;Inherit;False;Property;_IndirectBiasSampleRate;Indirect Bias Sample Rate;18;0;Create;True;0;0;0;False;0;False;0.7;0.3;0;1;0;1;FLOAT;0
+Node;AmplifyShaderEditor.RangedFloatNode;1148;-1556.492,1913.354;Inherit;False;Property;_IndirectBiasSampleRate;Indirect Bias Sample Rate;18;0;Create;True;0;0;0;False;0;False;1;0.3;0;1;0;1;FLOAT;0
 Node;AmplifyShaderEditor.RangedFloatNode;1083;-1198.338,2155.388;Inherit;False;Property;_LightFactor;LightFactor;21;0;Create;True;0;0;0;False;0;False;0.5;1;0;1;0;1;FLOAT;0
 Node;AmplifyShaderEditor.RegisterLocalVarNode;1082;-915.4537,2151.096;Inherit;False;LightFactor;-1;True;1;0;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.RangedFloatNode;303;-1284.752,1979.481;Inherit;False;Property;_MinIndirectLight;MinIndirectLight;19;0;Create;True;0;0;0;False;0;False;0.1;0.3;0;1;0;1;FLOAT;0
@@ -980,4 +980,4 @@ WireConnection;1091;0;1092;0
 WireConnection;1091;1;1090;0
 WireConnection;1092;0;1089;0
 ASEEND*/
-//CHKSM=CD84C74D4B106D2459D4A0C86931AC71DC8A3217
+//CHKSM=95E517047659025828F10FA1170F4704D5AAA1CF

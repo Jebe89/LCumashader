@@ -80,7 +80,7 @@ Shader "LCumashader/BaseTransparentDepthPrePass"
 		_MaxDirectLight("MaxDirectLight", Range( 0 , 2)) = 1
 		_IndirectLightBiasSample1("Indirect Light Bias Sample1", Vector) = (0,0,0,1)
 		_IndirectLightBiasSample2("Indirect Light Bias Sample2", Vector) = (0,1,0,1)
-		_IndirectBiasSampleRate("Indirect Bias Sample Rate", Range( 0 , 1)) = 0.7
+		_IndirectBiasSampleRate("Indirect Bias Sample Rate", Range( 0 , 1)) = 1
 		_MinIndirectLight("MinIndirectLight", Range( 0 , 1)) = 0.1
 		_MaxIndirectLight("MaxIndirectLight", Range( 0 , 2)) = 1
 		_LightColorGrayScale("LightColor GrayScale", Range( 0 , 1)) = 0
@@ -2222,7 +2222,7 @@ Node;AmplifyShaderEditor.CustomExpressionNode;797;-5375.078,1682.452;Inherit;Fal
 Node;AmplifyShaderEditor.CustomExpressionNode;798;-5371.27,1808.066;Inherit;False;return normalize(UNITY_MATRIX_V[2].xyz + UNITY_MATRIX_V[1].xyz)@;3;Create;0;Default LightDir;False;False;0;;False;0;1;FLOAT3;0
 Node;AmplifyShaderEditor.DynamicAppendNode;1104;-3891.708,2033.879;Inherit;False;FLOAT4;4;0;FLOAT3;0,0,0;False;1;FLOAT;0;False;2;FLOAT;0;False;3;FLOAT;1;False;1;FLOAT4;0
 Node;AmplifyShaderEditor.RangedFloatNode;303;-3507.742,2297.407;Inherit;False;Property;_MinIndirectLight;MinIndirectLight;77;0;Create;True;0;0;0;False;0;False;0.1;0.3;0;1;0;1;FLOAT;0
-Node;AmplifyShaderEditor.RangedFloatNode;1101;-3804.195,2383.658;Inherit;False;Property;_IndirectBiasSampleRate;Indirect Bias Sample Rate;76;0;Create;True;0;0;0;False;0;False;0.7;0.3;0;1;0;1;FLOAT;0
+Node;AmplifyShaderEditor.RangedFloatNode;1101;-3804.195,2383.658;Inherit;False;Property;_IndirectBiasSampleRate;Indirect Bias Sample Rate;76;0;Create;True;0;0;0;False;0;False;1;0.3;0;1;0;1;FLOAT;0
 Node;AmplifyShaderEditor.NormalizeNode;1106;-4183.826,2282.666;Inherit;False;True;1;0;FLOAT3;0,0,0;False;1;FLOAT3;0
 Node;AmplifyShaderEditor.DynamicAppendNode;1108;-4350.294,2276.23;Inherit;False;FLOAT3;4;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;0;False;3;FLOAT;0;False;1;FLOAT3;0
 Node;AmplifyShaderEditor.DynamicAppendNode;1098;-4353.878,2102.918;Inherit;False;FLOAT3;4;0;FLOAT;0;False;1;FLOAT;0;False;2;FLOAT;0;False;3;FLOAT;0;False;1;FLOAT3;0
@@ -2646,4 +2646,4 @@ WireConnection;1109;0;1110;0
 WireConnection;1111;0;1100;0
 WireConnection;1111;1;1109;0
 ASEEND*/
-//CHKSM=7B2D96C1AEDFA0846C91FEA72919BF72DCD51EE2
+//CHKSM=A2AB5AE56422589C952CCD8B239E8AF966A2CD67

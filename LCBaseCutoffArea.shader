@@ -92,7 +92,7 @@ Shader "LCumashader/BaseCutoffArea"
 		_MaxDirectLight("MaxDirectLight", Range( 0 , 2)) = 1
 		_IndirectLightBiasSample1("Indirect Light Bias Sample1", Vector) = (0,0,0,1)
 		_IndirectLightBiasSample2("Indirect Light Bias Sample2", Vector) = (0,1,0,1)
-		_IndirectBiasSampleRate("Indirect Bias Sample Rate", Range( 0 , 1)) = 0.7
+		_IndirectBiasSampleRate("Indirect Bias Sample Rate", Range( 0 , 1)) = 1
 		_MinIndirectLight("MinIndirectLight", Range( 0 , 1)) = 0.1
 		_MaxIndirectLight("MaxIndirectLight", Range( 0 , 2)) = 1
 		_LightColorGrayScale("LightColor GrayScale", Range( 0 , 1)) = 0
@@ -2509,7 +2509,7 @@ Node;AmplifyShaderEditor.NormalizeNode;1065;-4184.677,2109.559;Inherit;False;Tru
 Node;AmplifyShaderEditor.DynamicAppendNode;1069;-4030.028,2122.416;Inherit;False;FLOAT4;4;0;FLOAT3;0,0,0;False;1;FLOAT;0;False;2;FLOAT;0;False;3;FLOAT;0;False;1;FLOAT4;0
 Node;AmplifyShaderEditor.CustomExpressionNode;1066;-3885.941,2126.017;Inherit;False;return ShadeSH9(Normal)@;3;Create;1;True;Normal;FLOAT4;0,0,0,0;In;;Half;False;ShadeSH9out;False;False;0;;False;1;0;FLOAT4;0,0,0,0;False;1;FLOAT3;0
 Node;AmplifyShaderEditor.SimpleMaxOpNode;1133;-3681.009,2135.664;Inherit;False;2;0;FLOAT3;0,0,0;False;1;FLOAT3;0,0,0;False;1;FLOAT3;0
-Node;AmplifyShaderEditor.RangedFloatNode;1067;-3657.007,2229.591;Inherit;False;Property;_IndirectBiasSampleRate;Indirect Bias Sample Rate;88;0;Create;True;0;0;0;False;0;False;0.7;0.3;0;1;0;1;FLOAT;0
+Node;AmplifyShaderEditor.RangedFloatNode;1067;-3657.007,2229.591;Inherit;False;Property;_IndirectBiasSampleRate;Indirect Bias Sample Rate;88;0;Create;True;0;0;0;False;0;False;1;0.3;0;1;0;1;FLOAT;0
 WireConnection;319;0;315;0
 WireConnection;322;0;319;0
 WireConnection;636;0;322;0
@@ -3007,4 +3007,4 @@ WireConnection;1066;0;1069;0
 WireConnection;1133;0;1066;0
 WireConnection;1133;1;1132;0
 ASEEND*/
-//CHKSM=FA76F3ECE0E618CD22C70CAD6115875C111C450C
+//CHKSM=5C28A15DE7BAE9390022D318DEBD4B3C49EBBDBA

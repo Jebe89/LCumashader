@@ -79,7 +79,7 @@ Shader "LCumashader/BaseCutoff"
 		_MaxDirectLight("MaxDirectLight", Range( 0 , 2)) = 1
 		_IndirectLightBiasSample1("Indirect Light Bias Sample1", Vector) = (0,0,0,1)
 		_IndirectLightBiasSample2("Indirect Light Bias Sample2", Vector) = (0,1,0,1)
-		_IndirectBiasSampleRate("Indirect Bias Sample Rate", Range( 0 , 1)) = 0.7
+		_IndirectBiasSampleRate("Indirect Bias Sample Rate", Range( 0 , 1)) = 1
 		_MinIndirectLight("MinIndirectLight", Range( 0 , 1)) = 0.1
 		_MaxIndirectLight("MaxIndirectLight", Range( 0 , 2)) = 1
 		_LightColorGrayScale("LightColor GrayScale", Range( 0 , 1)) = 0
@@ -2348,7 +2348,7 @@ Node;AmplifyShaderEditor.NormalizeNode;1074;-4169.708,2273.884;Inherit;False;Tru
 Node;AmplifyShaderEditor.CustomExpressionNode;1075;-3858.175,2323.942;Inherit;False;return ShadeSH9(Normal)@;3;Create;1;True;Normal;FLOAT4;0,0,0,0;In;;Half;False;ShadeSH9out;False;False;0;;False;1;0;FLOAT4;0,0,0,0;False;1;FLOAT3;0
 Node;AmplifyShaderEditor.DynamicAppendNode;1076;-4008.766,2319.742;Inherit;False;FLOAT4;4;0;FLOAT3;0,0,0;False;1;FLOAT;0;False;2;FLOAT;0;False;3;FLOAT;0;False;1;FLOAT4;0
 Node;AmplifyShaderEditor.SimpleMaxOpNode;1077;-3665.342,2162.363;Inherit;False;2;0;FLOAT3;0,0,0;False;1;FLOAT3;0,0,0;False;1;FLOAT3;0
-Node;AmplifyShaderEditor.RangedFloatNode;1067;-3876.909,2418.592;Inherit;False;Property;_IndirectBiasSampleRate;Indirect Bias Sample Rate;75;0;Create;True;0;0;0;False;0;False;0.7;0.3;0;1;0;1;FLOAT;0
+Node;AmplifyShaderEditor.RangedFloatNode;1067;-3876.909,2418.592;Inherit;False;Property;_IndirectBiasSampleRate;Indirect Bias Sample Rate;75;0;Create;True;0;0;0;False;0;False;1;0.3;0;1;0;1;FLOAT;0
 Node;AmplifyShaderEditor.SamplerNode;66;-3072.651,-1842.426;Inherit;True;Property;_BaseTex;TripleMaskMap (_base);14;0;Create;False;0;0;0;False;0;False;-1;None;None;True;0;False;white;Auto;False;Object;-1;Auto;Texture2D;8;0;SAMPLER2D;;False;1;FLOAT2;0,0;False;2;FLOAT;0;False;3;FLOAT2;0,0;False;4;FLOAT2;0,0;False;5;FLOAT;1;False;6;FLOAT;0;False;7;SAMPLERSTATE;;False;5;COLOR;0;FLOAT;1;FLOAT;2;FLOAT;3;FLOAT;4
 WireConnection;319;0;315;0
 WireConnection;322;0;319;0
@@ -2792,4 +2792,4 @@ WireConnection;1076;3;1072;4
 WireConnection;1077;0;1066;0
 WireConnection;1077;1;1075;0
 ASEEND*/
-//CHKSM=3809356BAE03A25997289340D1D15D01E4150E34
+//CHKSM=8998611ED7A07F3FE7E3EA7DDD3A65C91FB61352

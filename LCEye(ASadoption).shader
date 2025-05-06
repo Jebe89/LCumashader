@@ -40,7 +40,7 @@ Shader "LCumashader/Eye(AS)"
 		_MaxDirectLight("MaxDirectLight", Range( 0 , 2)) = 1
 		_IndirectLightBiasSample1("Indirect Light Bias Sample1", Vector) = (0,0,0,1)
 		_IndirectLightBiasSample2("Indirect Light Bias Sample2", Vector) = (0,1,0,1)
-		_IndirectBiasSampleRate("Indirect Bias Sample Rate", Range( 0 , 1)) = 0.7
+		_IndirectBiasSampleRate("Indirect Bias Sample Rate", Range( 0 , 1)) = 1
 		_MinIndirectLight("MinIndirectLight", Range( 0 , 1)) = 0.1
 		_MaxIndirectLight("MaxIndirectLight", Range( 0 , 2)) = 1
 		_LightColorGrayScale("LightColor GrayScale", Range( 0 , 1)) = 0
@@ -1505,7 +1505,7 @@ Node;AmplifyShaderEditor.CustomExpressionNode;1965;-2199.501,244.391;Inherit;Fal
 Node;AmplifyShaderEditor.SimpleMaxOpNode;1966;-1994.569,254.0381;Inherit;False;2;0;FLOAT3;0,0,0;False;1;FLOAT3;0,0,0;False;1;FLOAT3;0
 Node;AmplifyShaderEditor.RangedFloatNode;303;-1886.361,422.1681;Inherit;False;Property;_MinIndirectLight;MinIndirectLight;37;0;Create;True;0;0;0;False;0;False;0.1;0.3;0;1;0;1;FLOAT;0
 Node;AmplifyShaderEditor.RangedFloatNode;301;-1868.388,506.7471;Inherit;False;Property;_MaxIndirectLight;MaxIndirectLight;38;0;Create;True;0;0;0;False;0;False;1;1;0;2;0;1;FLOAT;0
-Node;AmplifyShaderEditor.RangedFloatNode;1967;-1987.803,349.9931;Inherit;False;Property;_IndirectBiasSampleRate;Indirect Bias Sample Rate;36;0;Create;True;0;0;0;False;0;False;0.7;0.3;0;1;0;1;FLOAT;0
+Node;AmplifyShaderEditor.RangedFloatNode;1967;-1987.803,349.9931;Inherit;False;Property;_IndirectBiasSampleRate;Indirect Bias Sample Rate;36;0;Create;True;0;0;0;False;0;False;1;0.3;0;1;0;1;FLOAT;0
 Node;AmplifyShaderEditor.TexturePropertyNode;906;-3648.479,321.3369;Inherit;True;Property;_MainTex;Diffuse Map (_eye);0;2;[Header];[NoScaleOffset];Create;False;1;Diffuse;0;0;False;0;False;None;784ceb657845ba045b7c7cede00feb22;False;white;Auto;Texture2D;-1;0;2;SAMPLER2D;0;SAMPLERSTATE;1
 Node;AmplifyShaderEditor.ToggleSwitchNode;1897;-2407.043,-27.97966;Inherit;False;Property;_ShadowinLightColor;Shadow in LightColor;9;0;Create;True;0;0;0;False;0;False;0;True;2;0;FLOAT;0;False;1;FLOAT;0;False;1;FLOAT;0
 Node;AmplifyShaderEditor.WorldNormalVector;1969;-2397.379,82.69696;Inherit;False;False;1;0;FLOAT3;0,0,1;False;4;FLOAT3;0;FLOAT;1;FLOAT;2;FLOAT;3
@@ -1883,4 +1883,4 @@ WireConnection;1966;1;1961;0
 WireConnection;1897;0;1898;0
 WireConnection;1897;1;1896;0
 ASEEND*/
-//CHKSM=DC16F56ED0A0E958E7D1E7798347A8B5A1223DB4
+//CHKSM=4F2188E39F7DD44A3747ED90319CFBC3947CFC38
