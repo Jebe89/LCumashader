@@ -4,7 +4,7 @@ Shader "LCumashader/BaseBillboard"
 {
 	Properties
 	{
-		_ClipValue( "Clip Value", Range( 0, 1 ) ) = 0.5
+		_ClipValue( "Clip Value", Range( 0, 1 ) ) = 0.1
 		[Header(Diffuse)] _MainTex( "Diffuse Map (_diff)", 2D ) = "white" {}
 		[HDR] _ToonBrightColor( "ToonBrightColor", Color ) = ( 1, 1, 1, 0 )
 		[Header(Shadow)] _ShadTex( "Shaded Diffuse (_shad_c)", 2D ) = "white" {}
@@ -1955,8 +1955,8 @@ Node;AmplifyShaderEditor.CommentaryNode, AmplifyShaderEditor, Version=0.0.0.0, C
 Node;AmplifyShaderEditor.CommentaryNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;962;593.1373,1103.615;Inherit;False;225;166;;1;963;Cull;1,1,1,1;0;0
 Node;AmplifyShaderEditor.RegisterLocalVarNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;618;28.75534,1682.217;Inherit;False;output_diff;-1;True;1;0;COLOR;0,0,0,0;False;1;COLOR;0
 Node;AmplifyShaderEditor.GetLocalVarNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;871;48.2202,1776.122;Inherit;False;646;Alpha;1;0;OBJECT;;False;1;FLOAT;0
-Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;895;-47.05523,1864.129;Inherit;False;Property;_ClipValue;Clip Value;0;0;Create;True;0;0;0;False;0;False;0.5;0.5;0;1;0;1;FLOAT;0
 Node;AmplifyShaderEditor.RegisterLocalVarNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;1095;-3056,2880;Inherit;False;Billboard;-1;True;1;0;FLOAT3;0,0,0;False;1;FLOAT3;0
+Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;895;-47.05523,1864.129;Inherit;False;Property;_ClipValue;Clip Value;0;0;Create;True;0;0;0;False;0;False;0.1;0.5;0;1;0;1;FLOAT;0
 Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;869;627.4192,905.4891;Inherit;False;Property;_StencilZFailFront;Stencil ZFailFront;95;1;[Enum];Create;True;0;0;1;UnityEngine.Rendering.StencilOp;True;0;False;0;0;0;0;0;1;FLOAT;0
 Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;865;626.1292,630.3798;Inherit;False;Property;_StencilComparison;Stencil Comparison;92;1;[Enum];Create;True;0;0;1;UnityEngine.Rendering.CompareFunction;True;0;False;0;0;0;0;0;1;FLOAT;0
 Node;AmplifyShaderEditor.RangedFloatNode, AmplifyShaderEditor, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null;864;628.1725,724.4445;Inherit;False;Property;_StencilPassFront;Stencil PassFront;93;1;[Enum];Create;True;0;0;1;UnityEngine.Rendering.StencilOp;True;0;False;0;0;0;0;0;1;FLOAT;0
@@ -2477,4 +2477,4 @@ WireConnection;890;2;1122;0
 WireConnection;889;0;900;0
 WireConnection;889;3;743;0
 ASEEND*/
-//CHKSM=F9479C1F57FF6E75379E6ABDB66DCB082625C4D2
+//CHKSM=3E04FBB6E2268080611720DA5641DE87E1474171
